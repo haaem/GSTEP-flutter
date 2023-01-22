@@ -12,7 +12,7 @@ class BodyText extends StatelessWidget {
     Key? key,
     this.size = 16,
     required this.text,
-    this.color = primaryBlack,
+    this.color = primaryNavy,
     this.weight = FontWeight.normal,
     this.overflow = TextOverflow.clip,
     this.textAlign = TextAlign.start
