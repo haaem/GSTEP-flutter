@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:developer';
-
 import 'package:twentyone_days/config/theme/text/body_text.dart';
 
 class GoogleLoginButton extends StatelessWidget {
@@ -48,7 +47,6 @@ class GoogleLoginButton extends StatelessWidget {
       log('email = ${user.email}');
       log('id = ${user.uid}');
     }
-
     return userCredential;
   }
 }
