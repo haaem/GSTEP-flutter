@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
-import 'package:twentyone_days/pages/home/home_page.dart';
+import 'package:twentyone_days/pages/home/main_page.dart';
 import 'package:twentyone_days/pages/login_page/login_page.dart';
+import 'package:twentyone_days/pages/map/map_page.dart';
+import 'package:twentyone_days/pages/mission/mission_page.dart';
 
 final List<GetPage> routes = [
   GetPage(
@@ -9,8 +11,18 @@ final List<GetPage> routes = [
       transition: Transition.zoom
   ),
   GetPage(
-    name: '/home',
-    page: () => const HomePage(),
+    name: '/main',
+    page: () => const MainPage(),
+    transition: Transition.fade,
+  ),
+  GetPage(
+    name: '/map',
+    page: () => const MapPage(),
+    transition: Transition.fade,
+  ),
+  GetPage(
+    name: '/mission',
+    page: () => const MissionPage(),
     transition: Transition.fade,
   ),
 ];

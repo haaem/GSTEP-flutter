@@ -1,9 +1,13 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:twentyone_days/config/theme/color.dart';
 import 'package:twentyone_days/data/marker_sample_data.dart';
-import 'dart:ui' as ui;
+import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({Key? key}) : super(key: key);
@@ -13,7 +17,9 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
+  //Completer<GoogleMapController> mapController = Completer();
   late GoogleMapController mapController;
+  //late ClusterManager _manager;
   late var currentGps;
   late var markerIcon;
   Set<Marker> markers = Set();
@@ -25,8 +31,18 @@ class _MapPageState extends State<MapPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    currentGps = getCurrentLocation();
-    _addMarkers();
+    //_manager = _initClusterManager();
+    getCurrentLocation().then((value) {
+      setState(() {
+        currentGps = value;
+      });
+    });
+    _createMarker().then((value) {
+      setState(() {
+        markers = value;
+      });
+    });
+    //widget.showMarker
   }
 
   @override
@@ -48,33 +64,36 @@ class _MapPageState extends State<MapPage> {
   }
 
   //마커
-   void _createMarker(String markerId, LatLng latLng, String markerImagePath, String owner) async {
-    //마커 이미지 변환
-     markerIcon = await BitmapDescriptor.fromAssetImage(
-       ImageConfiguration(),
-       markerImagePath,
-     );
-     markers.add(
-        Marker(
-          markerId: MarkerId(markerId),
-          position: latLng,
-          icon: markerIcon,
-          infoWindow: InfoWindow(
-            title: owner,
-          ),
-        )
-     );
-  }
-
-  void _addMarkers() {
-    for (int i=0; i<markerList.length; i++) {
-      _createMarker(markerList[i].markerId, LatLng(markerList[i].latitude, markerList[i].longitude), markerList[i].imagePath, markerList[i].owner);
-    }
-    setState(() {});
+  Future<Set<Marker>> _createMarker() async {
+    //마커 이미지 변환 & 마커 추가
+     Set<Marker> markersSet = {};
+     for (int i=0; i<markerList.length; i++) {
+       var markerIcon = await BitmapDescriptor.fromAssetImage(
+         ImageConfiguration(),
+         markerList[i].imagePath,
+       );
+       markersSet.add(
+           Marker(
+             markerId: MarkerId(markerList[i].markerId),
+             position: LatLng(markerList[i].latitude, markerList[i].longitude),
+             icon: markerIcon,
+             infoWindow: InfoWindow(
+               title: markerList[i].owner,
+             ),
+           )
+       );
+     }
+     return markersSet;
   }
 
   @override
   Widget build(BuildContext context) {
+    _createMarker().then((value) {
+      setState(() {
+        markers = value;
+      });
+    });
+
     return SafeArea(
         child: Scaffold(
           body: Stack(
@@ -87,8 +106,21 @@ class _MapPageState extends State<MapPage> {
                 ),
                 myLocationEnabled: true,
                 myLocationButtonEnabled: false,
+                mapToolbarEnabled: false,
                 markers: markers,
               ),
+              // 메인페이지로 돌아가기
+              Positioned(
+                  child: IconButton(
+                    icon: Icon(SFSymbols.arrow_left, color: primaryGrey, size: 30,),
+                    onPressed: () {
+                      Get.back();
+                    },
+                  ),
+                top: 7,
+                left: 10,
+              ),
+              // 내위치
               Positioned(
                  child: FloatingActionButton(
                     onPressed: () async {
