@@ -32,6 +32,7 @@ dependencies:
   #구글맵
   google_maps_flutter: ^2.2.3
   location: ^4.4.0
+  google_maps_cluster_manager: ^3.0.0+1
 
 dev_dependencies:
   flutter_test:

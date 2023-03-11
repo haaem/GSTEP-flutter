@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:twentyone_days/config/theme/color.dart';
 import 'package:twentyone_days/config/theme/text/title_text.dart';
-import 'package:twentyone_days/pages/home/home_page.dart';
-import 'package:twentyone_days/pages/map/map_page.dart';
+import 'package:twentyone_days/pages/home/main_page.dart';
 import 'google_login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get/get.dart';
 
 enum LoginState {
   login,
@@ -23,7 +21,7 @@ class LoginPage extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
             if (snapshot.hasData) {
-              return const MapPage();
+              return const MainPage();
             } else {
               return SafeArea(
                 child: Container(
