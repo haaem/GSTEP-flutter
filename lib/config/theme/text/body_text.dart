@@ -8,6 +8,7 @@ class BodyText extends StatelessWidget {
   final FontWeight weight;
   final overflow;
   final TextAlign textAlign;
+  final bool shadow;
   const BodyText({
     Key? key,
     this.size = 16,
@@ -15,7 +16,8 @@ class BodyText extends StatelessWidget {
     this.color = primaryNavy,
     this.weight = FontWeight.normal,
     this.overflow = TextOverflow.clip,
-    this.textAlign = TextAlign.start
+    this.textAlign = TextAlign.start,
+    this.shadow = false,
   }) : super(key: key);
 
   @override
@@ -29,6 +31,7 @@ class BodyText extends StatelessWidget {
         fontSize: size,
         fontWeight: weight,
         overflow: overflow,
+        shadows: shadow ? <Shadow> [Shadow(offset: Offset(2.5, 2.5), blurRadius: 10, color: primaryGrey)] : null,
       ),
     );
   }
