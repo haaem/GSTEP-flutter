@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
 import 'package:get/get.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:twentyone_days/config/theme/color.dart';
+import 'package:twentyone_days/config/theme/text/body_text.dart';
+import 'package:twentyone_days/config/theme/text/title_text.dart';
+import 'package:twentyone_days/pages/home/mission_record.dart';
+import 'package:twentyone_days/pages/home/panel_widget.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -14,17 +19,26 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    BorderRadiusGeometry radius = BorderRadius.only(
+      topLeft: Radius.circular(24),
+      topRight: Radius.circular(24),
+    );
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+    PanelController _pc = new PanelController();
+    bool panelClosed = true;
+
     return SafeArea(
         child: Scaffold(
           appBar: AppBar(
             toolbarHeight: 70,
             elevation: 0,
-            backgroundColor: Colors.transparent,
+            backgroundColor: primaryLightGreen,
             leading: IconButton(
               icon: Icon(
                 SFSymbols.map_fill,
                 size: 28,
-                color: primaryGrey,
+                color: Colors.white,
               ),
               onPressed: () {
                 Get.toNamed('/map');
@@ -35,7 +49,7 @@ class _MainPageState extends State<MainPage> {
                 icon: Icon(
                   SFSymbols.square_list_fill,
                   size: 28,
-                  color: primaryGrey,
+                  color: Colors.white,
                 ),
                 onPressed: () {
                   Get.toNamed('/mission');
@@ -43,23 +57,58 @@ class _MainPageState extends State<MainPage> {
               ),
             ],
           ),
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              // crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(height: 150),
-                Image.asset('assets/images/tree_imsi.png'),
-                SizedBox(height: 70,),
-                IconButton(
-                    onPressed: null,
-                    icon: Icon(
-                      SFSymbols.plus_circle_fill,
-                      color: primaryGrey,
-                      size: 50,
-                    )
-                )
-              ],
+          body: SlidingUpPanel(
+            controller: _pc,
+            panelBuilder: (controller) => PanelWidget(
+              controller: controller,
+            ),
+            minHeight: 260,
+            maxHeight: height,
+            borderRadius: radius,
+            color: Colors.white,
+            // panel 펴기 전에
+            collapsed: Container(
+              margin: EdgeInsets.only(left: 35),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 165),
+                  GestureDetector(
+                    child: Container(
+                      height: 60,
+                      width: width-70,
+                      decoration: BoxDecoration(
+                        color: Color(0xffD9D9D9),
+                        borderRadius: BorderRadius.circular(20)
+                      ),
+                      child: Center(child: BodyText(text: 'Detect New Step!', color: Colors.white,)),
+                    ),
+                  ),
+                  SizedBox(height: 18,),
+                  Container(
+                    height: 2,
+                    width: width-70,
+                    decoration: BoxDecoration(
+                        color: Color(0xffCCCCCC)
+                    ),
+                  )
+                ],
+              ),
+            ),
+            // 바탕
+            body: Container(
+              decoration: BoxDecoration(
+                color: primaryLightGreen
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                // crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 150),
+                  Image.asset('assets/images/tree_imsi.png', width: 210,),
+                  SizedBox(height: 70,),
+                ],
+              ),
             ),
           ),
         )

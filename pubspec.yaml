@@ -26,13 +26,16 @@ dependencies:
   #스플레시스크린
   flutter_native_splash: ^2.2.16
 
-  #dday
-  stop_watch_timer: ^2.0.0
-
   #구글맵
   google_maps_flutter: ^2.2.3
   location: ^4.4.0
   google_maps_cluster_manager: ^3.0.0+1
+
+  #sliding_up_panel
+  sliding_up_panel: ^2.0.0+1
+
+  #점선
+  dotted_line: ^3.1.0
 
 dev_dependencies:
   flutter_test:
