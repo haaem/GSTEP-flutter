@@ -4,8 +4,6 @@ import 'package:get/get.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:twentyone_days/config/theme/color.dart';
 import 'package:twentyone_days/config/theme/text/body_text.dart';
-import 'package:twentyone_days/config/theme/text/title_text.dart';
-import 'package:twentyone_days/pages/home/mission_record.dart';
 import 'package:twentyone_days/pages/home/panel_widget.dart';
 
 class MainPage extends StatefulWidget {
@@ -104,7 +102,7 @@ class _MainPageState extends State<MainPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 // crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 150),
+                  SizedBox(height: 65),
                   Image.asset('assets/images/tree_imsi.png', width: 210,),
                   SizedBox(height: 70,),
                 ],

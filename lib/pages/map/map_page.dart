@@ -6,6 +6,7 @@ import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:twentyone_days/config/theme/color.dart';
+import 'package:twentyone_days/config/theme/text/body_text.dart';
 import 'package:twentyone_days/data/marker_sample_data.dart';
 import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
 
@@ -77,9 +78,59 @@ class _MapPageState extends State<MapPage> {
              markerId: MarkerId(markerList[i].markerId),
              position: LatLng(markerList[i].latitude, markerList[i].longitude),
              icon: markerIcon,
-             infoWindow: InfoWindow(
-               title: markerList[i].owner,
-             ),
+             onTap: () {
+               showDialog(
+                   context: context,
+                   builder: (BuildContext context) => AlertDialog(
+                     insetPadding: EdgeInsets.zero,
+                       contentPadding: EdgeInsets.zero,
+                       shape: RoundedRectangleBorder(
+                           borderRadius: BorderRadius.circular(40)
+                       ),
+                       content: Builder(
+                         builder: (context) {
+                           var height = MediaQuery.of(context).size.height;
+                           var width = MediaQuery.of(context).size.width;
+
+                           return Container(
+                             //height: height - 225,
+                             width: width - 70,
+                             child: Column(
+                               mainAxisSize: MainAxisSize.min,
+                               crossAxisAlignment: CrossAxisAlignment.start,
+                               children: [
+                                 SizedBox(height: 75,),
+                                 Row(
+                                   children: [
+                                     SizedBox(width: 32,),
+                                     Column(
+                                       crossAxisAlignment: CrossAxisAlignment.start,
+                                       children: [
+                                         BodyText(text: '백승연', size: 16, color: primaryGrey, weight: FontWeight.w600,),
+                                         SizedBox(height: 10,),
+                                         BodyText(text: 'South Korea', size: 16, color: primaryGrey, weight: FontWeight.w300,)
+                                       ],
+                                     ),
+                                   ],
+                                 ),
+                                 SizedBox(height: 40,),
+                                 Center(child: Image.asset('assets/images/tree_imsi.png', height: 285,),),
+                                 SizedBox(height: 15,),
+                                 Center(child: BodyText(text: '2023.02.10 (금)', size: 18, color: primaryGrey, weight: FontWeight.w300,),),
+                                 SizedBox(height: 15,),
+                                 Container(
+                                   margin: EdgeInsets.symmetric(horizontal: 20),
+                                     child: Center(child: BodyText(text: '프로필 메세지 프로필 메세지 프로필 메세지 프로필 메세지 프로필 메세지', size: 18, color: primaryGrey, weight: FontWeight.w300,))
+                                 ),
+                                 SizedBox(height: 70,)
+                               ],
+                             ),
+                           );
+                         }
+                       )
+                   )
+               );
+             }
            )
        );
      }

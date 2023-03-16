@@ -9,11 +9,12 @@ class MissionPage extends StatefulWidget {
   const MissionPage({Key? key}) : super(key: key);
 
   @override
-  State<MissionPage> createState() => _MissionPageState();
+  State<MissionPage> createState() => MissionPageState();
 }
 
-class _MissionPageState extends State<MissionPage> {
+class MissionPageState extends State<MissionPage> {
   late double width;
+  int score = 5;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class _MissionPageState extends State<MissionPage> {
                   Row(
                     children: [
                       MissionButton(
-                          score: 5,
+                          score: score,
                           width: (width-50)*0.5,
                           height: 240,
                           color: Colors.teal,
@@ -53,7 +54,7 @@ class _MissionPageState extends State<MissionPage> {
                       ),
                       SizedBox(width: 10,),
                       MissionButton(
-                          score: 5,
+                          score: score,
                           width: (width-50)*0.5,
                           height: 240,
                           color: Colors.indigo,
@@ -65,7 +66,7 @@ class _MissionPageState extends State<MissionPage> {
                   ),
                   SizedBox(height: 10,),
                   MissionButton(
-                      score: 5,
+                      score: score,
                       width: width-40,
                       height: 240,
                       color: Colors.orange,
@@ -77,7 +78,7 @@ class _MissionPageState extends State<MissionPage> {
                   Row(
                     children: [
                       MissionButton(
-                          score: 5,
+                          score: score,
                           width: (width-50)*0.5,
                           height: 240,
                           color: Colors.redAccent,
@@ -87,7 +88,7 @@ class _MissionPageState extends State<MissionPage> {
                       ),
                       SizedBox(width: 10,),
                       MissionButton(
-                          score: 5,
+                          score: score,
                           width: (width-50)*0.5,
                           height: 240,
                           color: Colors.deepPurpleAccent,
