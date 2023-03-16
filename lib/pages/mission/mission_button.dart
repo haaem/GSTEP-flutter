@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
+import 'package:flutter/services.dart';
 import 'package:twentyone_days/config/theme/color.dart';
 import 'package:twentyone_days/config/theme/text/body_text.dart';
 import 'package:twentyone_days/config/theme/text/title_text.dart';
+import 'package:twentyone_days/pages/mission/mission_page.dart';
 
 class MissionButton extends StatefulWidget {
   const MissionButton({
@@ -31,6 +32,8 @@ class MissionButton extends StatefulWidget {
 class _MissionButtonState extends State<MissionButton> {
   @override
   Widget build(BuildContext context) {
+    MissionPageState? parent = context.findAncestorStateOfType<MissionPageState>();
+
     if (widget.isActive == true) {
       return GestureDetector(
         child: Container(
@@ -53,7 +56,7 @@ class _MissionButtonState extends State<MissionButton> {
                   children: [
                     SizedBox(height: 30,),
                     TitleText(
-                      text: "${widget.score}",
+                      text: "${parent!.score}",
                       size: 65,
                       color: Colors.white,
                     ),
@@ -92,6 +95,13 @@ class _MissionButtonState extends State<MissionButton> {
                 )
               )
           );
+        },
+        onLongPress: () {
+          parent!.setState(() {
+            parent.score++;
+          });
+          HapticFeedback.mediumImpact();
+          setState(() {});
         },
       );
     } else {
