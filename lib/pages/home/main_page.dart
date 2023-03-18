@@ -64,35 +64,6 @@ class _MainPageState extends State<MainPage> {
             maxHeight: height,
             borderRadius: radius,
             color: Colors.white,
-            // panel 펴기 전에
-            collapsed: Container(
-              margin: EdgeInsets.only(left: 35),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 165),
-                  GestureDetector(
-                    child: Container(
-                      height: 60,
-                      width: width-70,
-                      decoration: BoxDecoration(
-                        color: Color(0xffD9D9D9),
-                        borderRadius: BorderRadius.circular(20)
-                      ),
-                      child: Center(child: BodyText(text: 'Detect New Step!', color: Colors.white,)),
-                    ),
-                  ),
-                  SizedBox(height: 18,),
-                  Container(
-                    height: 2,
-                    width: width-70,
-                    decoration: BoxDecoration(
-                        color: Color(0xffCCCCCC)
-                    ),
-                  )
-                ],
-              ),
-            ),
             // 바탕
             body: Container(
               decoration: BoxDecoration(

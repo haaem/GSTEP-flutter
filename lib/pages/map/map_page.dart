@@ -71,7 +71,7 @@ class _MapPageState extends State<MapPage> {
      for (int i=0; i<markerList.length; i++) {
        var markerIcon = await BitmapDescriptor.fromAssetImage(
          ImageConfiguration(),
-         markerList[i].imagePath,
+         "assets/images/marker.png",
        );
        markersSet.add(
            Marker(

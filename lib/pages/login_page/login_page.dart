@@ -27,7 +27,7 @@ class LoginPage extends StatelessWidget {
                 child: Container(
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
-                  color: primaryNavy,
+                  color: primaryLightGreen2,
                   child: Padding(
                     padding: EdgeInsets.only(top: 50),
                     child: Column(
@@ -36,12 +36,12 @@ class LoginPage extends StatelessWidget {
                           height: MediaQuery.of(context).size.height/2 - 150,
                         ),
                         TitleText(
-                          text: '21Days',
+                          text: 'GSTEP',
                           color: Colors.white,
                           textAlign: TextAlign.center,
                           weight: FontWeight.w700,
                         ),
-                        SizedBox(height: 20,),
+                        SizedBox(height: 30,),
                         GoogleLoginButton()
                       ],
                     ),
