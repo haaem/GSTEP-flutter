@@ -52,7 +52,7 @@ class _PanelWidgetState extends State<PanelWidget> {
                   height: 60,
                   width: width-70,
                   decoration: BoxDecoration(
-                      color: Color(0xff66C970),
+                      color: buttonColor,
                       borderRadius: BorderRadius.circular(20)
                   ),
                   child: Center(child: BodyText(text: 'Detect New Step!', color: Colors.white,)),
