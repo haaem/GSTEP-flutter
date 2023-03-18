@@ -15,16 +15,18 @@ class PanelWidget extends StatefulWidget {
 class _PanelWidgetState extends State<PanelWidget> {
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+
     return ListView(
       controller: widget.controller,
       children: [
-        buildAboutContent(),
+        buildAboutContent(width),
         SizedBox(height: 50,)
       ],
     );
   }
 
-  Widget buildAboutContent() {
+  Widget buildAboutContent(double width) {
     return Column(
       children: [
         SizedBox(height: 25,),
@@ -42,17 +44,29 @@ class _PanelWidgetState extends State<PanelWidget> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               BodyText(text: 'yuljang_', color: primaryBlack, weight: FontWeight.w600, size: 18,),
+              SizedBox(height: 17,),
+              BodyText(text: 'You took 4 steps towards greener\nworld!', color: primaryGrey, size: 18,),
               SizedBox(height: 20,),
-              BodyText(text: 'You took 4 steps towards greener\nworld!', color: primaryGrey, size: 18, shadow: true,),
-              SizedBox(height: 50,),
+              GestureDetector(
+                child: Container(
+                  height: 60,
+                  width: width-70,
+                  decoration: BoxDecoration(
+                      color: Color(0xff66C970),
+                      borderRadius: BorderRadius.circular(20)
+                  ),
+                  child: Center(child: BodyText(text: 'Detect New Step!', color: Colors.white,)),
+                ),
+              ),
+              SizedBox(height: 18,),
               Container(
                 height: 2,
-                width: MediaQuery.of(context).size.width-70,
+                width: width-70,
                 decoration: BoxDecoration(
                     color: Color(0xffCCCCCC)
                 ),
               ),
-              SizedBox(height: 55,),
+              SizedBox(height: 20),
               Container(
                 margin: EdgeInsets.only(left: 5, bottom: 70),
                 child: Column(

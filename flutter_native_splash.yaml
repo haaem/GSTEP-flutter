@@ -1,0 +1,7 @@
+flutter_native_splash:
+  color: "#9FBD5D"
+  image: assets/images/tree_imsi.png
+  fullscreen: true
+
+  android_12:
+    color: "#9FBD5D"
