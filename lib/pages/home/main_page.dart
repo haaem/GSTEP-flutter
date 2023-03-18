@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:twentyone_days/config/theme/color.dart';
 import 'package:twentyone_days/config/theme/text/body_text.dart';
+import 'package:twentyone_days/config/theme/tree.dart';
 import 'package:twentyone_days/pages/home/panel_widget.dart';
 
 class MainPage extends StatefulWidget {
@@ -31,10 +32,10 @@ class _MainPageState extends State<MainPage> {
           appBar: AppBar(
             toolbarHeight: 70,
             elevation: 0,
-            backgroundColor: primaryLightGreen,
+            backgroundColor: backgroundColor,
             leading: IconButton(
               icon: Icon(
-                SFSymbols.map_fill,
+                Icons.map_rounded,
                 size: 28,
                 color: Colors.white,
               ),
@@ -45,7 +46,7 @@ class _MainPageState extends State<MainPage> {
             actions: [
               IconButton(
                 icon: Icon(
-                  SFSymbols.square_list_fill,
+                  Icons.format_list_bulleted,
                   size: 28,
                   color: Colors.white,
                 ),
@@ -67,15 +68,36 @@ class _MainPageState extends State<MainPage> {
             // 바탕
             body: Container(
               decoration: BoxDecoration(
-                color: primaryLightGreen
+                color: backgroundColor
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                // crossAxisAlignment: CrossAxisAlignment.center,
+              child: Stack(
                 children: [
-                  SizedBox(height: 65),
-                  Image.asset('assets/images/tree_imsi.png', width: 210,),
-                  SizedBox(height: 70,),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 65),
+                      Image.asset(myTree, width: 210,),
+                      Center(child: SizedBox(height: 70,)),
+                    ],
+                  ),
+                  Positioned(
+                    bottom: 375,
+                      right: 30,
+                      child: GestureDetector(
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: Colors.white70,
+                          ),
+                          child: Icon(Icons.autorenew_rounded, color: primaryBlack,),
+                        ),
+                        onTap: () {
+                          Get.toNamed('/color_setting');
+                        },
+                      )
+                  )
                 ],
               ),
             ),
