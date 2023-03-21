@@ -29,33 +29,6 @@ class _MainPageState extends State<MainPage> {
 
     return SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-            toolbarHeight: 70,
-            elevation: 0,
-            backgroundColor: backgroundColor,
-            leading: IconButton(
-              icon: Icon(
-                Icons.map_rounded,
-                size: 28,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Get.toNamed('/map');
-              },
-            ),
-            actions: [
-              IconButton(
-                icon: Icon(
-                  Icons.format_list_bulleted,
-                  size: 28,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  Get.toNamed('/mission');
-                },
-              ),
-            ],
-          ),
           body: SlidingUpPanel(
             controller: _pc,
             panelBuilder: (controller) => PanelWidget(
@@ -72,16 +45,44 @@ class _MainPageState extends State<MainPage> {
               ),
               child: Stack(
                 children: [
+                  Positioned(
+                    top: 30,
+                    left: 20,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.map_rounded,
+                        size: 28,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        Get.toNamed('/map');
+                      },
+                    ),
+                  ),
+                  Positioned(
+                    top: 30,
+                    right: 20,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.format_list_bulleted_rounded,
+                        size: 28,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        Get.toNamed('/mission');
+                      },
+                    ),
+                  ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      SizedBox(height: 65),
+                      SizedBox(height: 120),
                       Image.asset(myTree, width: 210,),
                       Center(child: SizedBox(height: 70,)),
                     ],
                   ),
                   Positioned(
-                    bottom: 375,
+                    bottom: 315,
                       right: 30,
                       child: GestureDetector(
                         child: Container(
@@ -91,7 +92,7 @@ class _MainPageState extends State<MainPage> {
                             borderRadius: BorderRadius.circular(50),
                             color: Colors.white70,
                           ),
-                          child: Icon(Icons.autorenew_rounded, color: primaryBlack,),
+                          child: Icon(Icons.autorenew_rounded, color: Colors.black54,),
                         ),
                         onTap: () {
                           Get.toNamed('/color_setting');
