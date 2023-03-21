@@ -104,12 +104,13 @@ class _MissionButtonState extends State<MissionButton> {
           setState(() {});
         },
       );
+      // 미션 열리지 않음
     } else {
       return Container(
         width: widget.width,
         height: widget.height,
         decoration: BoxDecoration(
-            color: primaryGrey,
+            color: Color(0xffDFDFDF),
             borderRadius: BorderRadius.circular(15)
         ),
       );

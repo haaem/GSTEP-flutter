@@ -21,10 +21,6 @@ class _MissionRecordState extends State<MissionRecord> {
         SizedBox(height: 10,),
         Row(
           children: [
-            DottedLine(
-              direction: Axis.vertical,
-              lineLength: 165,
-            ),
             SizedBox(width: 35,),
             Image.asset('assets/images/tree_imsi.png', height: 120,)
           ],

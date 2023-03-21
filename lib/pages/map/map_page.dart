@@ -78,6 +78,7 @@ class _MapPageState extends State<MapPage> {
              markerId: MarkerId(markerList[i].markerId),
              position: LatLng(markerList[i].latitude, markerList[i].longitude),
              icon: markerIcon,
+             //팝업
              onTap: () {
                showDialog(
                    context: context,
@@ -91,38 +92,52 @@ class _MapPageState extends State<MapPage> {
                          builder: (context) {
                            var height = MediaQuery.of(context).size.height;
                            var width = MediaQuery.of(context).size.width;
+                           BorderRadiusGeometry radius = BorderRadius.only(
+                             topLeft: Radius.circular(40),
+                             topRight: Radius.circular(40),
+                           );
 
                            return Container(
-                             //height: height - 225,
                              width: width - 70,
                              child: Column(
                                mainAxisSize: MainAxisSize.min,
                                crossAxisAlignment: CrossAxisAlignment.start,
                                children: [
-                                 SizedBox(height: 75,),
+                                 Container(
+                                   decoration: BoxDecoration(
+                                     color: backgroundColor,
+                                     borderRadius: radius
+                                   ),
+                                   child: Column(
+                                     children: [
+                                       SizedBox(height: 85,),
+                                       Center(child: Image.asset('assets/images/tree_imsi.png', height: 285,),),
+                                       SizedBox(height: 20,),
+                                       Center(child: BodyText(text: '2023.02.10 (금)', size: 18, color: Colors.white, weight: FontWeight.w600,),),
+                                       SizedBox(height: 30,),
+                                     ],
+                                   ),
+                                 ),
+                                 SizedBox(height: 20,),
                                  Row(
                                    children: [
-                                     SizedBox(width: 32,),
+                                     SizedBox(width: 27,),
                                      Column(
                                        crossAxisAlignment: CrossAxisAlignment.start,
                                        children: [
                                          BodyText(text: '백승연', size: 16, color: primaryGrey, weight: FontWeight.w600,),
-                                         SizedBox(height: 10,),
+                                         SizedBox(height: 7,),
                                          BodyText(text: 'South Korea', size: 16, color: primaryGrey, weight: FontWeight.w300,)
                                        ],
                                      ),
                                    ],
                                  ),
-                                 SizedBox(height: 40,),
-                                 Center(child: Image.asset('assets/images/tree_imsi.png', height: 285,),),
-                                 SizedBox(height: 15,),
-                                 Center(child: BodyText(text: '2023.02.10 (금)', size: 18, color: primaryGrey, weight: FontWeight.w300,),),
                                  SizedBox(height: 15,),
                                  Container(
                                    margin: EdgeInsets.symmetric(horizontal: 20),
-                                     child: Center(child: BodyText(text: '프로필 메세지 프로필 메세지 프로필 메세지 프로필 메세지 프로필 메세지', size: 18, color: primaryGrey, weight: FontWeight.w300,))
+                                     child: Center(child: BodyText(text: 'Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text', size: 12, color: primaryGrey, weight: FontWeight.w300,))
                                  ),
-                                 SizedBox(height: 70,)
+                                 SizedBox(height: 35,)
                                ],
                              ),
                            );
@@ -156,9 +171,10 @@ class _MapPageState extends State<MapPage> {
                   zoom: 15,
                 ),
                 myLocationEnabled: true,
-                myLocationButtonEnabled: false,
+                myLocationButtonEnabled: true,
                 mapToolbarEnabled: false,
                 markers: markers,
+                minMaxZoomPreference: MinMaxZoomPreference(15,20),
               ),
               // 메인페이지로 돌아가기
               Positioned(
