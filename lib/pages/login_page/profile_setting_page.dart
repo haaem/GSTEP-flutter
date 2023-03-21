@@ -1,9 +1,10 @@
-import 'package:country_code_picker/country_code_picker.dart';
+
 import 'package:flutter/material.dart';
 import 'package:twentyone_days/config/theme/color.dart';
 import 'package:twentyone_days/config/theme/text/body_text.dart';
 import '../../config/theme/text/title_text.dart';
 import 'package:get/get.dart';
+import 'package:country_picker/country_picker.dart';
 
 class ProfileSettingPage extends StatefulWidget {
   const ProfileSettingPage({Key? key}) : super(key: key);
@@ -80,6 +81,7 @@ class ProfileSettingPageState extends State<ProfileSettingPage> {
                       onChanged: (value) {
                         nickname = value;
                         _tryValidation();
+                        setState(() {});
                       },
                       decoration: InputDecoration(
                         hintText: 'ex) Jane/John Doe',
@@ -103,17 +105,58 @@ class ProfileSettingPageState extends State<ProfileSettingPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 3,),
-              Container(
-                margin: EdgeInsets.only(left: 20),
-                child: CountryCodePicker(
-                  initialSelection: '+82',
-                  alignLeft: true,
-                  onChanged: (value) {
-                    country = value;
-                    _hasCountry = true;
-                    _tryValidation();
-                  },
+              SizedBox(height: 15,),
+              GestureDetector(
+                onTap: () {
+                  showCountryPicker(
+                    context: context,
+                    onSelect: (Country value) {
+                      print('Select country: ${value.name}');
+                      country = value.name;
+                      _hasCountry = true;
+                      _tryValidation();
+                      setState(() {});
+                    },
+                    countryListTheme: CountryListThemeData(
+                      flagSize: 25,
+                      backgroundColor: Colors.white,
+                      textStyle: TextStyle(fontSize: 16, color: Colors.blueGrey),
+                      bottomSheetHeight: 500, // Optional. Country list modal height
+                      //Optional. Sets the border radius for the bottomsheet.
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20.0),
+                        topRight: Radius.circular(20.0),
+                      ),
+                      //Optional. Styles the search field.
+                      inputDecoration: InputDecoration(
+                        labelText: 'Search',
+                        hintText: 'Start typing to search',
+                        prefixIcon: const Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: const Color(0xFF8C98A8).withOpacity(0.2),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                child: Container(
+                  height: 40,
+                  width: MediaQuery.of(context).size.width-80,
+                  margin: EdgeInsets.symmetric(horizontal: 40),
+                  decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(
+                      color: primaryGrey,
+                    ))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      BodyText(text: _hasCountry ? '${country}' : 'Choose your country.',),
+                      Icon(Icons.keyboard_arrow_down_rounded, color: primaryGrey,)
+                    ],
+                  ),
                 ),
               ),
               SizedBox(height: 60,),
@@ -130,6 +173,7 @@ class ProfileSettingPageState extends State<ProfileSettingPage> {
                   backgroundColor: _isValid ? primaryLightGreen2 : primaryGrey
                 ),
                 onPressed: _isValid? () {
+                  print("nickname: ${nickname} country: ${country}");
                   Get.toNamed('/main');
                 } : null,
               )
