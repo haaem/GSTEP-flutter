@@ -5,6 +5,7 @@ import 'package:twentyone_days/pages/home/main_page.dart';
 import 'google_login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'profile_setting_page.dart';
 
 enum LoginState {
   login,
@@ -20,8 +21,10 @@ class LoginPage extends StatelessWidget {
       body: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
-            if (snapshot.hasData) {
+            if (snapshot.hasData && ProfileSettingPageState.profileSetting) {
               return const MainPage();
+            } else if (snapshot.hasData) {
+              return const ProfileSettingPage();
             } else {
               return SafeArea(
                 child: Container(
