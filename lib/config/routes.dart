@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:twentyone_days/pages/home/main_page.dart';
 import 'package:twentyone_days/pages/login_page/login_page.dart';
+import 'package:twentyone_days/pages/login_page/profile_setting_page.dart';
 import 'package:twentyone_days/pages/map/map_page.dart';
 import 'package:twentyone_days/pages/mission/mission_page.dart';
 import 'package:twentyone_days/pages/setting/color_setting.dart';
@@ -36,6 +37,11 @@ final List<GetPage> routes = [
   GetPage(
     name: '/tree_setting',
     page: () => const TreeSetting(),
+    transition: Transition.fade,
+  ),
+  GetPage(
+    name: '/profile_setting',
+    page: () => const ProfileSettingPage(),
     transition: Transition.fade,
   ),
 ];

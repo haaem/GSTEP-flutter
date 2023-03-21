@@ -3,6 +3,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:developer';
 import 'package:twentyone_days/config/theme/text/body_text.dart';
+import 'package:get/get.dart';
 
 class GoogleLoginButton extends StatelessWidget {
   const GoogleLoginButton({Key? key}) : super(key: key);
@@ -10,7 +11,12 @@ class GoogleLoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: _googleLogin,
+      onTap: () async {
+        bool isLogin = await _googleLogin();
+        if (isLogin) {
+          Get.toNamed('/profile_setting');
+        }
+      },
       child: Container(
         height: 40,
         width: 260,
@@ -30,7 +36,7 @@ class GoogleLoginButton extends StatelessWidget {
     );
   }
 
-  Future<UserCredential> _googleLogin() async {
+  Future<bool> _googleLogin() async {
     final GoogleSignIn _googleSignIn = GoogleSignIn();
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
@@ -46,7 +52,8 @@ class GoogleLoginButton extends StatelessWidget {
       log('name = ${user.displayName}');
       log('email = ${user.email}');
       log('id = ${user.uid}');
+      return Future.value(true);
     }
-    return userCredential;
+    return Future.value(false);
   }
 }

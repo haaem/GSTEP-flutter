@@ -46,7 +46,7 @@ class _MainPageState extends State<MainPage> {
               child: Stack(
                 children: [
                   Positioned(
-                    top: 30,
+                    top: 20,
                     left: 20,
                     child: IconButton(
                       icon: Icon(
@@ -60,7 +60,7 @@ class _MainPageState extends State<MainPage> {
                     ),
                   ),
                   Positioned(
-                    top: 30,
+                    top: 20,
                     right: 20,
                     child: IconButton(
                       icon: Icon(

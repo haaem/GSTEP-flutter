@@ -12,6 +12,7 @@ class MissionButton extends StatefulWidget {
     required this.width,
     required this.height,
     required this.color,
+    required this.backColor,
     required this.name,
     required this.content,
     required this.isActive
@@ -21,6 +22,7 @@ class MissionButton extends StatefulWidget {
   final double width;
   final double height;
   final Color color;
+  final Color backColor;
   final String name;
   final String content;
   final bool isActive;
@@ -40,11 +42,7 @@ class _MissionButtonState extends State<MissionButton> {
           width: widget.width,
           height: widget.height,
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [widget.color, widget.color.withOpacity(0.35)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+              color: widget.color,
               borderRadius: BorderRadius.circular(15)
           ),
           child: Padding(
