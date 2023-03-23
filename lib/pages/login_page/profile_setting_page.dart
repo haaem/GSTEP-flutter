@@ -1,10 +1,13 @@
-
 import 'package:flutter/material.dart';
 import 'package:twentyone_days/config/theme/color.dart';
 import 'package:twentyone_days/config/theme/text/body_text.dart';
+import 'package:twentyone_days/core/params/user.dart';
 import '../../config/theme/text/title_text.dart';
 import 'package:get/get.dart';
 import 'package:country_picker/country_picker.dart';
+import 'package:dio/dio.dart' as Dio;
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ProfileSettingPage extends StatefulWidget {
   const ProfileSettingPage({Key? key}) : super(key: key);
@@ -15,8 +18,6 @@ class ProfileSettingPage extends StatefulWidget {
 
 class ProfileSettingPageState extends State<ProfileSettingPage> {
   final _formKey = GlobalKey<FormState>();
-  String nickname = "";
-  late var country;
   bool _isValid = false;
   bool _hasCountry = false;
   static bool profileSetting = false;
@@ -76,10 +77,10 @@ class ProfileSettingPageState extends State<ProfileSettingPage> {
                         return null;
                       },
                       onSaved: (value) {
-                        nickname = value!;
+                        userName = value!;
                       },
                       onChanged: (value) {
-                        nickname = value;
+                        userName = value;
                         _tryValidation();
                         setState(() {});
                       },
@@ -112,7 +113,7 @@ class ProfileSettingPageState extends State<ProfileSettingPage> {
                     context: context,
                     onSelect: (Country value) {
                       print('Select country: ${value.name}');
-                      country = value.name;
+                      userCountry = value.name;
                       _hasCountry = true;
                       _tryValidation();
                       setState(() {});
@@ -153,7 +154,7 @@ class ProfileSettingPageState extends State<ProfileSettingPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      BodyText(text: _hasCountry ? '${country}' : 'Choose your country.',),
+                      BodyText(text: _hasCountry ? '${userCountry}' : 'Choose your country.',),
                       Icon(Icons.keyboard_arrow_down_rounded, color: primaryGrey,)
                     ],
                   ),
@@ -172,8 +173,8 @@ class ProfileSettingPageState extends State<ProfileSettingPage> {
                   ),
                   backgroundColor: _isValid ? primaryLightGreen2 : primaryGrey
                 ),
-                onPressed: _isValid? () {
-                  print("nickname: ${nickname} country: ${country}");
+                onPressed: _isValid? () async {
+                  upload();
                   Get.toNamed('/main');
                 } : null,
               )
@@ -182,5 +183,29 @@ class ProfileSettingPageState extends State<ProfileSettingPage> {
         ),
       ),
     );
+  }
+
+  Future upload() async {
+    final url = Uri.parse(
+      'http://34.64.137.128:8080/user/',
+    );
+
+    final response = await http.post(url, body: {
+      "Email": userEmail,
+      "Nickname": userName,
+      "Country": userCountry
+    });
+
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+    print('Response headers: ${response.headers}');
+
+    // final res2 = await http.get(
+    //   Uri.parse(
+    //     'http://34.64.137.128:8080/user/4',
+    //   ),
+    // );
+    // print('Response status: ${res2.statusCode}');
+    // print('Response body: ${res2.body}');
   }
 }

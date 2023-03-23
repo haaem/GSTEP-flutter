@@ -6,6 +6,8 @@ import 'package:twentyone_days/config/theme/color.dart';
 import 'package:twentyone_days/config/theme/text/body_text.dart';
 import 'package:twentyone_days/config/theme/tree.dart';
 import 'package:twentyone_days/pages/home/panel_widget.dart';
+import 'package:permission_handler/permission_handler.dart' as per;
+import 'package:twentyone_days/config/theme/color.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -15,6 +17,16 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  Future<bool> permission() async {
+    Map<per.Permission, per.PermissionStatus> status =
+        await [per.Permission.location].request(); // [] 권한배열에 권한을 작성
+
+    if (await per.Permission.location.isGranted) {
+      return Future.value(true);
+    } else {
+      return Future.value(false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,85 +37,120 @@ class _MainPageState extends State<MainPage> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     PanelController _pc = new PanelController();
-    bool panelClosed = true;
 
     return SafeArea(
         child: Scaffold(
-          body: SlidingUpPanel(
-            controller: _pc,
-            panelBuilder: (controller) => PanelWidget(
-              controller: controller,
-            ),
-            minHeight: 260,
-            maxHeight: height,
-            borderRadius: radius,
-            color: Colors.white,
-            // 바탕
-            body: Container(
-              decoration: BoxDecoration(
-                color: backgroundColor
+      body: SlidingUpPanel(
+        controller: _pc,
+        panelBuilder: (controller) => PanelWidget(
+          controller: controller,
+        ),
+        minHeight: 260,
+        maxHeight: height,
+        borderRadius: radius,
+        color: Colors.white,
+        // 바탕
+        body: Container(
+          decoration: BoxDecoration(color: backgroundColor),
+          child: Stack(
+            children: [
+              Positioned(
+                top: 20,
+                left: 20,
+                child: IconButton(
+                  icon: Icon(
+                    Icons.map_rounded,
+                    size: 28,
+                    color: Colors.white,
+                  ),
+                  onPressed: () async {
+                    var accept = await permission();
+                    if (accept) {
+                      Get.toNamed('/map');
+                    } else {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                                content: BodyText(
+                                  text: 'Please set your location permission.',
+                                  color: primaryBlack,
+                                  size: 17,
+                                  textAlign: TextAlign.start,
+                                ),
+                                actions: [
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Get.back();
+                                    },
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                buttonColor)),
+                                    child: BodyText(
+                                      text: 'Yes',
+                                      color: Colors.white,
+                                      textAlign: TextAlign.center,
+                                      size: 12,
+                                    ),
+                                  ),
+                                ],
+                              ));
+                    }
+                  },
+                ),
               ),
-              child: Stack(
+              Positioned(
+                top: 20,
+                right: 20,
+                child: IconButton(
+                  icon: Icon(
+                    Icons.format_list_bulleted_rounded,
+                    size: 28,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    Get.toNamed('/mission');
+                  },
+                ),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Positioned(
-                    top: 20,
-                    left: 20,
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.map_rounded,
-                        size: 28,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        Get.toNamed('/map');
-                      },
-                    ),
+                  SizedBox(height: 120),
+                  Image.asset(
+                    myTree,
+                    width: 210,
                   ),
-                  Positioned(
-                    top: 20,
-                    right: 20,
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.format_list_bulleted_rounded,
-                        size: 28,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        Get.toNamed('/mission');
-                      },
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 120),
-                      Image.asset(myTree, width: 210,),
-                      Center(child: SizedBox(height: 70,)),
-                    ],
-                  ),
-                  Positioned(
-                    bottom: 315,
-                      right: 30,
-                      child: GestureDetector(
-                        child: Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            color: Colors.white70,
-                          ),
-                          child: Icon(Icons.autorenew_rounded, color: Colors.black54,),
-                        ),
-                        onTap: () {
-                          Get.toNamed('/color_setting');
-                        },
-                      )
-                  )
+                  Center(
+                      child: SizedBox(
+                    height: 70,
+                  )),
                 ],
               ),
-            ),
+              Positioned(
+                  bottom: 315,
+                  right: 30,
+                  child: GestureDetector(
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: Colors.white70,
+                      ),
+                      child: Icon(
+                        Icons.autorenew_rounded,
+                        color: Colors.black54,
+                      ),
+                    ),
+                    onTap: () {
+                      Get.toNamed('/color_setting');
+                    },
+                  ))
+            ],
           ),
-        )
-    );
+        ),
+      ),
+    ));
   }
 }

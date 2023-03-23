@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:developer';
 import 'package:twentyone_days/config/theme/text/body_text.dart';
 import 'package:get/get.dart';
+import 'package:twentyone_days/core/params/user.dart';
 
 class GoogleLoginButton extends StatelessWidget {
   const GoogleLoginButton({Key? key}) : super(key: key);
@@ -52,6 +53,7 @@ class GoogleLoginButton extends StatelessWidget {
       log('name = ${user.displayName}');
       log('email = ${user.email}');
       log('id = ${user.uid}');
+      userEmail = user.email!;
       return Future.value(true);
     }
     return Future.value(false);
