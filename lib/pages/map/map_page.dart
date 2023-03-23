@@ -5,12 +5,14 @@ import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:twentyone_days/config/theme/color.dart';
+import 'package:twentyone_days/core/params/my_marker.dart';
 import 'package:twentyone_days/data/marker_sample_data.dart';
 import 'package:twentyone_days/pages/map/add_mymarker_button.dart';
 import 'package:twentyone_days/pages/map/marker_popup.dart';
 
 class MapPage extends StatefulWidget {
-  const MapPage({Key? key}) : super(key: key);
+  const MapPage({Key? key, required this.location}) : super(key: key);
+  final LocationData location;
 
   @override
   State<MapPage> createState() => _MapPageState();
@@ -29,8 +31,6 @@ class _MapPageState extends State<MapPage> {
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
-    //_manager = _initClusterManager();
     getCurrentLocation().then((value) {
       setState(() {
         currentGps = value;
@@ -41,6 +41,7 @@ class _MapPageState extends State<MapPage> {
         markers = value;
       });
     });
+    super.initState();
   }
 
   @override
@@ -48,10 +49,6 @@ class _MapPageState extends State<MapPage> {
     // TODO: implement dispose
     super.dispose();
     mapController.dispose();
-  }
-
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
   }
 
   // 현재위치
@@ -68,7 +65,7 @@ class _MapPageState extends State<MapPage> {
     for (int i = 0; i < markerList.length; i++) {
       var markerIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(),
-        "assets/images/marker.png",
+        "assets/images/marker_others.png",
       );
       markersSet.add(Marker(
           markerId: MarkerId(markerList[i].markerId),
@@ -92,12 +89,15 @@ class _MapPageState extends State<MapPage> {
       });
     });
 
+
     return SafeArea(
         child: Scaffold(
       body: Stack(
         children: [
           GoogleMap(
-            onMapCreated: _onMapCreated,
+            onMapCreated: (GoogleMapController controller) {
+              mapController = controller;
+            },
             initialCameraPosition: CameraPosition(
               target: _center,
               zoom: 15,
@@ -142,13 +142,34 @@ class _MapPageState extends State<MapPage> {
           //   right: 15,
           // ),
           Positioned(
-            child: MyMarker(),
+            child: MyMarker(
+                latLng: LatLng(currentGps.latitude, currentGps.longitude)),
             bottom: 30,
             left: 35,
-            right: 35,
           )
         ],
       ),
     ));
+  }
+
+  Widget button() {
+    if (hasMarker) {
+      return FloatingActionButton(
+        onPressed: () async {
+          currentGps = await getCurrentLocation();
+          mapController.animateCamera(CameraUpdate.newLatLng(
+              LatLng(currentGps.latitude, currentGps.longitude)));
+          setState(() {});
+        },
+        child: Icon(
+          Icons.my_location_rounded,
+          color: primaryBlack,
+        ),
+        backgroundColor: Colors.white,
+      );
+    }
+    return MyMarker(
+        latLng: LatLng(currentGps.latitude, currentGps.longitude)
+    );
   }
 }
