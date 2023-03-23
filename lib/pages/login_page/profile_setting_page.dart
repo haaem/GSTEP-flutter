@@ -175,7 +175,7 @@ class ProfileSettingPageState extends State<ProfileSettingPage> {
                 ),
                 onPressed: _isValid? () async {
                   upload();
-                  Get.toNamed('/main');
+                  Get.toNamed('/color_setting');
                 } : null,
               )
             ],
@@ -195,6 +195,9 @@ class ProfileSettingPageState extends State<ProfileSettingPage> {
       "Nickname": userName,
       "Country": userCountry
     });
+    var userData = jsonDecode(response.body);
+    userId = userData['ID'];
+    userLevel = userData['Step'];
 
     print('Response status: ${response.statusCode}');
     print('Response body: ${response.body}');
@@ -205,7 +208,8 @@ class ProfileSettingPageState extends State<ProfileSettingPage> {
     //     'http://34.64.137.128:8080/user/4',
     //   ),
     // );
+    //
     // print('Response status: ${res2.statusCode}');
-    // print('Response body: ${res2.body}');
+    // print('Response body: ${userId}');
   }
 }

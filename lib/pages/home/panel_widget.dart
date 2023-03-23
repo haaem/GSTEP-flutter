@@ -73,11 +73,11 @@ class _PanelWidgetState extends State<PanelWidget> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    MissionRecord(date: '8 March',),
+                    MissionRecord(date: '22 March',),
                     SizedBox(height: 8,),
-                    MissionRecord(date: '6 March',),
+                    MissionRecord(date: '18 March',),
                     SizedBox(height: 8,),
-                    MissionRecord(date: '6 March',),
+                    MissionRecord(date: '13 March',),
                     SizedBox(height: 8,),
                     MissionRecord(date: '6 March',),
                   ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
 import 'package:get/get.dart';
+import 'package:location/location.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:twentyone_days/config/theme/color.dart';
 import 'package:twentyone_days/config/theme/text/body_text.dart';
@@ -8,6 +9,7 @@ import 'package:twentyone_days/config/theme/tree.dart';
 import 'package:twentyone_days/pages/home/panel_widget.dart';
 import 'package:permission_handler/permission_handler.dart' as per;
 import 'package:twentyone_days/config/theme/color.dart';
+import 'package:twentyone_days/pages/map/map_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -28,6 +30,12 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
+  Future<LocationData> getCurrentLocation() async {
+    Location location = Location();
+    final position = await location.getLocation();
+    return position;
+  }
+
   @override
   Widget build(BuildContext context) {
     BorderRadiusGeometry radius = BorderRadius.only(
@@ -37,6 +45,7 @@ class _MainPageState extends State<MainPage> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     PanelController _pc = new PanelController();
+    late var current;
 
     return SafeArea(
         child: Scaffold(
@@ -66,7 +75,8 @@ class _MainPageState extends State<MainPage> {
                   onPressed: () async {
                     var accept = await permission();
                     if (accept) {
-                      Get.toNamed('/map');
+                      current = await getCurrentLocation();
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MapPage(location: current)));
                     } else {
                       showDialog(
                           context: context,
@@ -87,7 +97,7 @@ class _MainPageState extends State<MainPage> {
                                             MaterialStateProperty.all(
                                                 buttonColor)),
                                     child: BodyText(
-                                      text: 'Yes',
+                                      text: 'OK',
                                       color: Colors.white,
                                       textAlign: TextAlign.center,
                                       size: 12,

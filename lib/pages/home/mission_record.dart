@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:twentyone_days/config/theme/text/body_text.dart';
 import '../../config/theme/text/title_text.dart';
 import 'package:dotted_line/dotted_line.dart';
 
@@ -21,10 +22,13 @@ class _MissionRecordState extends State<MissionRecord> {
         SizedBox(height: 10,),
         Row(
           children: [
-            SizedBox(width: 35,),
-            Image.asset('assets/images/tree_imsi.png', height: 120,)
+            SizedBox(width: 10,),
+            Image.asset('assets/images/tree_imsi.png', height: 120,),
           ],
-        )
+        ),
+        SizedBox(height: 10,),
+        BodyText(text: 'You took 3 steps towards greener\nworld!', color: Color(0xffBDBDBD), size: 18, weight: FontWeight.w400,),
+        SizedBox(height: 10,)
       ],
     );
   }

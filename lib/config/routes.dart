@@ -20,11 +20,6 @@ final List<GetPage> routes = [
     transition: Transition.fade,
   ),
   GetPage(
-    name: '/map',
-    page: () => const MapPage(),
-    transition: Transition.fade,
-  ),
-  GetPage(
     name: '/mission',
     page: () => const MissionPage(),
     transition: Transition.fade,
