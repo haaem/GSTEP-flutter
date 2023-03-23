@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:twentyone_days/config/theme/color.dart';
+import 'package:twentyone_days/core/params/user.dart';
 
 import '../../config/theme/text/body_text.dart';
 import 'mission_record.dart';
@@ -43,7 +44,7 @@ class _PanelWidgetState extends State<PanelWidget> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              BodyText(text: 'yuljang_', color: primaryBlack, weight: FontWeight.w600, size: 18,),
+              BodyText(text: userName, color: primaryBlack, weight: FontWeight.w600, size: 18,),
               SizedBox(height: 17,),
               BodyText(text: 'You took 4 steps towards greener\nworld!', color: primaryGrey, size: 18,),
               SizedBox(height: 20,),
