@@ -49,35 +49,32 @@ class _MyMarkerState extends State<MyMarker> {
       onTap: () async {
         if (isStepAllowed) {
           isMarkerAllowed = await checkMarker();
-          //임시
-          showDialog(context: context, builder: (BuildContext context) => MessageAddPopup());
 
-
-          // showDialog(context: context, builder: (BuildContext context) => isMarkerAllowed ? AddMarkerPopup(lat: widget.latLng.latitude, long: widget.latLng.longitude,) :
-          //     AlertDialog(
-          //       content: BodyText(
-          //         text: 'Too close to other trees!',
-          //         color: primaryBlack,
-          //         size: 17,
-          //         textAlign: TextAlign.start,
-          //       ),
-          //       actions: [
-          //         ElevatedButton(
-          //           onPressed: () {
-          //             Get.back();
-          //           },
-          //           style: ButtonStyle(
-          //               backgroundColor:
-          //               MaterialStateProperty.all(buttonColor)),
-          //           child: BodyText(
-          //             text: 'OK',
-          //             color: Colors.white,
-          //             textAlign: TextAlign.center,
-          //             size: 12,
-          //           ),
-          //         ),
-          //       ],
-          //     ));
+          showDialog(context: context, builder: (BuildContext context) => isMarkerAllowed ? AddMarkerPopup(lat: widget.latLng.latitude, long: widget.latLng.longitude,) :
+              AlertDialog(
+                content: BodyText(
+                  text: 'Too close to other trees!',
+                  color: primaryBlack,
+                  size: 17,
+                  textAlign: TextAlign.start,
+                ),
+                actions: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    style: ButtonStyle(
+                        backgroundColor:
+                        MaterialStateProperty.all(buttonColor)),
+                    child: BodyText(
+                      text: 'OK',
+                      color: Colors.white,
+                      textAlign: TextAlign.center,
+                      size: 12,
+                    ),
+                  ),
+                ],
+              ));
         }
       },
     );
