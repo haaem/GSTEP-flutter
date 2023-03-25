@@ -4,6 +4,7 @@ import 'package:twentyone_days/config/theme/color.dart';
 import 'package:get/get.dart';
 import 'package:twentyone_days/config/theme/mission_color.dart';
 import 'package:twentyone_days/config/theme/text/body_text.dart';
+import 'package:twentyone_days/core/params/user.dart';
 import 'package:twentyone_days/pages/mission/mission_button.dart';
 
 class MissionPage extends StatefulWidget {
@@ -15,7 +16,9 @@ class MissionPage extends StatefulWidget {
 
 class MissionPageState extends State<MissionPage> {
   late double width;
-  int score = 5;
+  int missionOpened = userMissionProgress.length;
+  int score1 = -1;
+  int score5 = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +26,12 @@ class MissionPageState extends State<MissionPage> {
 
     return SafeArea(
         child: Scaffold(
-      body: Padding(
-        padding: EdgeInsets.only(top: 10,left: 20, right: 20,),
+      body: Container(
+        margin: EdgeInsets.only(
+          top: 10,
+          left: 20,
+          right: 20,
+        ),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,10 +48,12 @@ class MissionPageState extends State<MissionPage> {
                       Get.back();
                     },
                   ),
-                  SizedBox(width: 20,),
+                  SizedBox(
+                    width: 20,
+                  ),
                   Center(
                     child: BodyText(
-                      text: 'You’ve opened 5 missions',
+                      text: 'You’ve opened ${missionOpened} missions',
                       textAlign: TextAlign.center,
                       color: primaryGrey,
                       size: 18,
@@ -58,71 +67,74 @@ class MissionPageState extends State<MissionPage> {
               Row(
                 children: [
                   MissionButton(
-                      score: score,
+                      id: 1,
+                      score: score1,
                       width: (width - 50) * 0.5,
                       height: 240,
                       color: missionLightGreen,
                       backColor: missionGreen,
-                      name: "USE\nA\nTUMBLER",
-                      content:
-                          "HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER ",
-                      isActive: true),
+                      name: "USE\nYOUR\nTUMBLER",
+                      content: "CHOOSE\nTUMBLERS,\nREDUCE\nPLASTIC\nWASTE",
+                      isActive: userMissionProgress.containsKey('1')),
                   SizedBox(
                     width: 10,
                   ),
                   MissionButton(
-                      score: score,
+                      id: 2,
+                      score: -1,
                       width: (width - 50) * 0.5,
                       height: 240,
                       color: missionLightBlue,
                       backColor: missionBlue,
-                      name: "USE\nA\nTUMBLER",
+                      name: "USE\nREUSABLE\nBAG",
                       content:
-                          "HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER ",
-                      isActive: false),
+                          "SAY NO\nTO\nPLASTIC\nBAGS,\nUSE\nREUSABLE\nONES!",
+                      isActive: userMissionProgress.containsKey('2')),
                 ],
               ),
               SizedBox(
                 height: 8,
               ),
               MissionButton(
-                  score: score,
+                  id: 3,
+                  score: -1,
                   width: width - 40,
                   height: 240,
                   color: missionLightOrange,
                   backColor: missionOrange,
-                  name: "USE\nA\nTUMBLER",
-                  content:
-                      "HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER ",
-                  isActive: true),
+                  name: "WALK\nFOR\nA SHORT DISTANCE",
+                  content: "WALK\nSHORT DISTANCES,\nREDUCE\nCARBON FOOTPRINT",
+                  isActive: userMissionProgress.containsKey('3')),
               SizedBox(
                 height: 8,
               ),
               Row(
                 children: [
                   MissionButton(
-                      score: score,
+                      id: 4,
+                      score: -1,
                       width: (width - 50) * 0.5,
                       height: 240,
                       color: missionLightPink,
                       backColor: missionPink,
-                      name: "USE\nA\nTUMBLER",
+                      name: "“WE”\nHAVE TO\nDO IT",
                       content:
-                          "HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER ㅍHAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER ",
-                      isActive: true),
+                          "EVERY\nACTION\nWE TAKE\nMAKES\nA\nDIFF-\nERENCE",
+                      isActive: userMissionProgress.containsKey('4')),
                   SizedBox(
                     width: 10,
                   ),
                   MissionButton(
-                      score: score,
+                      id: 5,
+                      score: score5,
                       width: (width - 50) * 0.5,
                       height: 240,
                       color: missionLightYellow,
                       backColor: missionYellow,
-                      name: "USE\nA\nTUMBLER",
+                      name: "ECO-\nDRIVING",
                       content:
-                          "HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER HAPPY TUMBLER ",
-                      isActive: true),
+                          "ECO-\nDRIVE\nTOWARDS\nA\nMORE\nSUSTAIN\n-ABLE\nFUTURE!",
+                      isActive: userMissionProgress.containsKey('5')),
                 ],
               ),
               SizedBox(

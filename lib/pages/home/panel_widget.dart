@@ -22,7 +22,7 @@ class _PanelWidgetState extends State<PanelWidget> {
       controller: widget.controller,
       children: [
         buildAboutContent(width),
-        SizedBox(height: 50,)
+        //SizedBox(height: 20,)
       ],
     );
   }
@@ -73,13 +73,13 @@ class _PanelWidgetState extends State<PanelWidget> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    MissionRecord(date: '22 March',),
+                    MissionRecord(date: '22 March', step: '4',),
                     SizedBox(height: 8,),
-                    MissionRecord(date: '18 March',),
+                    MissionRecord(date: '18 March', step: '3',),
                     SizedBox(height: 8,),
-                    MissionRecord(date: '13 March',),
+                    MissionRecord(date: '13 March', step: '2',),
                     SizedBox(height: 8,),
-                    MissionRecord(date: '6 March',),
+                    MissionRecord(date: '6 March', step: '1',),
                   ],
                 ),
               ),

@@ -58,6 +58,7 @@ class _MyMarkerState extends State<MyMarker> {
                   size: 17,
                   textAlign: TextAlign.start,
                 ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                 actions: [
                   ElevatedButton(
                     onPressed: () {
@@ -74,6 +75,7 @@ class _MyMarkerState extends State<MyMarker> {
                     ),
                   ),
                 ],
+                actionsPadding: EdgeInsets.only(bottom: 15, right: 15),
               ));
         }
       },
