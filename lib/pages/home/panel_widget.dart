@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:twentyone_days/config/theme/color.dart';
 import 'package:twentyone_days/core/params/user.dart';
+import 'package:twentyone_days/pages/camera/home_view.dart';
 
 import '../../config/theme/text/body_text.dart';
 import 'mission_record.dart';
@@ -58,6 +59,7 @@ class _PanelWidgetState extends State<PanelWidget> {
                   ),
                   child: Center(child: BodyText(text: 'Detect New Step!', color: Colors.white,)),
                 ),
+                onTap: (() => Navigator.push(context, MaterialPageRoute(builder: (context) => HomeView())))
               ),
               SizedBox(height: 18,),
               Container(
