@@ -175,6 +175,7 @@ class ProfileSettingPageState extends State<ProfileSettingPage> {
                 ),
                 onPressed: _isValid? () async {
                   upload();
+                  profileSetting = true;
                   Get.toNamed('/color_setting');
                 } : null,
               )

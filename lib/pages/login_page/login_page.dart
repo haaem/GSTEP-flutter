@@ -21,9 +21,9 @@ class LoginPage extends StatelessWidget {
       body: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
-            // if (snapshot.hasData && ProfileSettingPageState.profileSetting) {
-            //   return const MainPage();
-            // } else {
+            if (ProfileSettingPageState.profileSetting) {
+              return const MainPage();
+            } else {
               return SafeArea(
                 child: Container(
                   height: MediaQuery.of(context).size.height,
@@ -50,7 +50,7 @@ class LoginPage extends StatelessWidget {
                 ),
               );
             }
-          //}
+          }
       )
     );
   }
