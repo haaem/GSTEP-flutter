@@ -42,6 +42,15 @@ dependencies:
   #점선
   dotted_line: ^3.1.0
 
+  #TFlite
+  tflite_flutter: ^0.9.0
+  tflite_flutter_helper:
+    git:
+      url: https://github.com/filofan1/tflite_flutter_helper.git
+      ref: 783f15e5a87126159147d8ea30b98eea9207ac70
+  camera: ^0.8.1+3
+  image: ^3.0.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -58,6 +67,7 @@ flutter:
   assets:
     - assets/fonts/
     - assets/images/
+    - assets/model/
 
   fonts:
     - family: SFProThin
