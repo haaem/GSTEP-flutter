@@ -15,10 +15,14 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   /// Results to draw bounding boxes
-  late List<Recognition> results;
+  late List<Recognition> results = [];
 
   /// Realtime stats
-  late Stats stats;
+  late Stats stats = Stats(
+      totalPredictTime: 0,
+      inferenceTime: 0,
+      preProcessingTime: 0,
+      totalElapsedTime: 0);
 
   /// Scaffold Key
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
@@ -85,7 +89,7 @@ class _HomeViewState extends State<HomeView> {
                                     StatsRow('Pre-processing time:',
                                         '${stats.preProcessingTime} ms'),
                                     StatsRow('Frame',
-                                        '${CameraViewSingleton.inputImageSize?.width} X ${CameraViewSingleton.inputImageSize?.height}'),
+                                        '${CameraViewSingleton.inputImageSize.width} X ${CameraViewSingleton.inputImageSize.height}'),
                                   ],
                                 ),
                               )
