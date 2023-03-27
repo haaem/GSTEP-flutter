@@ -47,23 +47,30 @@ class _TreeSettingState extends State<TreeSetting> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           GestureDetector(
-                            child: Image.asset(tree_1_1, width: 50,),
+                            child: Image.asset(tree_green_1, width: 50,),
                             onTap: () {
-                              myTree = tree_1_1;
+                              myTree = tree_green_1;
                               setState(() {});
                             },
                           ),
                           GestureDetector(
-                            child: Image.asset(tree_2_1, width: 50,),
+                            child: Image.asset(tree_pink_1, width: 50,),
                             onTap: () {
-                              myTree = tree_2_1;
+                              myTree = tree_pink_1;
                               setState(() {});
                             },
                           ),
                           GestureDetector(
-                            child: Image.asset(tree_3_1, width: 50,),
+                            child: Image.asset(tree_blue_1, width: 50,),
                             onTap: () {
-                              myTree = tree_3_1;
+                              myTree = tree_blue_1;
+                              setState(() {});
+                            },
+                          ),
+                          GestureDetector(
+                            child: Image.asset(tree_yel_1, width: 50,),
+                            onTap: () {
+                              myTree = tree_yel_1;
                               setState(() {});
                             },
                           ),

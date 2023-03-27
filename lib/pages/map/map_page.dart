@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:twentyone_days/config/theme/color.dart';
 import 'package:twentyone_days/core/params/my_marker.dart';
+import 'package:twentyone_days/core/params/total_marker.dart';
 import 'package:twentyone_days/data/marker_sample_data.dart';
 import 'package:twentyone_days/pages/map/add_mymarker_button.dart';
 import 'package:twentyone_days/pages/map/marker_popup.dart';
@@ -61,7 +62,7 @@ class _MapPageState extends State<MapPage> {
   Future<Set<Marker>> _createMarker() async {
     //마커 이미지 변환 & 마커 추가
     Set<Marker> markersSet = {};
-    for (int i = 0; i < markerList.length; i++) {
+    for (int i = 0; i < totalMarker.length; i++) {
       var markerIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(),
         "assets/images/marker_others.png",
@@ -122,24 +123,6 @@ class _MapPageState extends State<MapPage> {
             top: 7,
             left: 10,
           ),
-          // 내위치
-          // Positioned(
-          //   child: FloatingActionButton(
-          //     onPressed: () async {
-          //       currentGps = await getCurrentLocation();
-          //       mapController.animateCamera(CameraUpdate.newLatLng(
-          //           LatLng(currentGps.latitude, currentGps.longitude)));
-          //       setState(() {});
-          //     },
-          //     child: Icon(
-          //       Icons.my_location_rounded,
-          //       color: primaryBlack,
-          //     ),
-          //     backgroundColor: Colors.white,
-          //   ),
-          //   bottom: 105,
-          //   right: 15,
-          // ),
           Positioned(
             child: MyMarker(
                 latLng: LatLng(currentGps.latitude, currentGps.longitude)),
