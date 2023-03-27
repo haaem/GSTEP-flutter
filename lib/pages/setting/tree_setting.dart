@@ -50,6 +50,7 @@ class _TreeSettingState extends State<TreeSetting> {
                             child: Image.asset(tree_green_1, width: 50,),
                             onTap: () {
                               myTree = tree_green_1;
+                              treeColor = 1;
                               setState(() {});
                             },
                           ),
@@ -57,6 +58,7 @@ class _TreeSettingState extends State<TreeSetting> {
                             child: Image.asset(tree_pink_1, width: 50,),
                             onTap: () {
                               myTree = tree_pink_1;
+                              treeColor = 2;
                               setState(() {});
                             },
                           ),
@@ -64,6 +66,7 @@ class _TreeSettingState extends State<TreeSetting> {
                             child: Image.asset(tree_blue_1, width: 50,),
                             onTap: () {
                               myTree = tree_blue_1;
+                              treeColor = 3;
                               setState(() {});
                             },
                           ),
@@ -71,6 +74,7 @@ class _TreeSettingState extends State<TreeSetting> {
                             child: Image.asset(tree_yel_1, width: 50,),
                             onTap: () {
                               myTree = tree_yel_1;
+                              treeColor = 4;
                               setState(() {});
                             },
                           ),

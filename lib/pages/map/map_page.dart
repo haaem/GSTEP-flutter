@@ -6,6 +6,7 @@ import 'package:location/location.dart';
 import 'package:twentyone_days/config/theme/color.dart';
 import 'package:twentyone_days/core/params/my_marker.dart';
 import 'package:twentyone_days/core/params/total_marker.dart';
+import 'package:twentyone_days/core/params/user.dart';
 import 'package:twentyone_days/data/marker_sample_data.dart';
 import 'package:twentyone_days/pages/map/add_mymarker_button.dart';
 import 'package:twentyone_days/pages/map/marker_popup.dart';
@@ -20,7 +21,6 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   late GoogleMapController mapController;
-
   late var currentGps;
   late var markerIcon;
   Set<Marker> markers = Set();
@@ -63,19 +63,25 @@ class _MapPageState extends State<MapPage> {
     //마커 이미지 변환 & 마커 추가
     Set<Marker> markersSet = {};
     for (int i = 0; i < totalMarker.length; i++) {
-      var markerIcon = await BitmapDescriptor.fromAssetImage(
+      if (totalMarker[i]["UserID"] == userId){
+        markerIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(),
-        "assets/images/marker_others.png",
-      );
+        "assets/images/marker_mine.png");
+      } else {
+        markerIcon = await BitmapDescriptor.fromAssetImage(
+          ImageConfiguration(),
+          "assets/images/marker_others.png",
+        );
+      }
       markersSet.add(Marker(
-          markerId: MarkerId(markerList[i].markerId),
-          position: LatLng(markerList[i].latitude, markerList[i].longitude),
+          markerId: MarkerId(totalMarker[i]["ID"].toString()),
+          position: LatLng(totalMarker[i]["Latitude"], totalMarker[i]["Longitude"]),
           icon: markerIcon,
           //팝업
           onTap: () {
             showDialog(
                 context: context,
-                builder: (BuildContext context) => MarkerPopup());
+                builder: (BuildContext context) => MarkerPopup(user: totalMarker[i]["UserID"], time: totalMarker[i]["CreatedAt"].substring(0,10),));
           }));
     }
     return markersSet;
@@ -106,7 +112,7 @@ class _MapPageState extends State<MapPage> {
             myLocationButtonEnabled: true,
             mapToolbarEnabled: false,
             markers: markers,
-            minMaxZoomPreference: MinMaxZoomPreference(15, 20),
+            minMaxZoomPreference: MinMaxZoomPreference(15, 25),
           ),
           // 메인페이지로 돌아가기
           Positioned(
