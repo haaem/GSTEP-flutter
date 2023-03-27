@@ -7,6 +7,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:twentyone_days/config/theme/color.dart';
 import 'package:twentyone_days/config/theme/text/body_text.dart';
 import 'package:twentyone_days/config/theme/tree.dart';
+import 'package:twentyone_days/core/params/total_marker.dart';
 import 'package:twentyone_days/core/params/user.dart';
 import 'package:twentyone_days/pages/home/panel_widget.dart';
 import 'package:permission_handler/permission_handler.dart' as per;
@@ -46,6 +47,14 @@ class _MainPageState extends State<MainPage> {
     print(response.body);
     var userData = jsonDecode(response.body);
     userMissionProgress = userData['Progress'];
+  }
+
+  void mapSetting() async {
+    final markerUrl = Uri.parse(
+      'http://34.64.137.128:8080/marker/',
+    );
+    var res = await http.get(markerUrl);
+    totalMarker = jsonDecode(res.body);
   }
 
   @override
@@ -88,6 +97,7 @@ class _MainPageState extends State<MainPage> {
                     var accept = await permission();
                     if (accept) {
                       current = await getCurrentLocation();
+                      mapSetting();
                       Navigator.push(context, MaterialPageRoute(builder: (context) => MapPage(location: current)));
                     } else {
                       showDialog(

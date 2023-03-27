@@ -46,7 +46,7 @@ class _PanelWidgetState extends State<PanelWidget> {
             children: [
               BodyText(text: userName, color: primaryBlack, weight: FontWeight.w600, size: 18,),
               SizedBox(height: 17,),
-              BodyText(text: 'You took 4 steps towards greener\nworld!', color: primaryGrey, size: 18,),
+              BodyText(text: 'You took ${userLevel} steps towards greener\nworld!', color: primaryGrey, size: 18,),
               SizedBox(height: 20,),
               GestureDetector(
                 child: Container(
