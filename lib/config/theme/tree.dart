@@ -24,3 +24,4 @@ final String tree_pink_5 = 'assets/images/tree_pink_5.png';
 
 
 String myTree = tree_green_1;
+int treeColor = 1;
