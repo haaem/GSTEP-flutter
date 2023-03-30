@@ -95,7 +95,6 @@ class _MapPageState extends State<MapPage> {
       });
     });
 
-
     return SafeArea(
         child: Scaffold(
       body: Stack(
