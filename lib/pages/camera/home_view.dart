@@ -7,18 +7,18 @@ import 'package:twentyone_days/pages/camera/camera_view_singleton.dart';
 
 import 'camera_view.dart';
 
-/// [HomeView] stacks [CameraView] and [BoxWidget]s with bottom sheet for stats
+
 class HomeView extends StatefulWidget {
   @override
-  _HomeViewState createState() => _HomeViewState();
+  State<HomeView> createState() => _HomeViewState();
 }
 
 class _HomeViewState extends State<HomeView> {
   /// Results to draw bounding boxes
-  late List<Recognition> results = [];
+  List<Recognition> results = [];
 
   /// Realtime stats
-  late Stats stats = Stats(
+  Stats stats = Stats(
       totalPredictTime: 0,
       inferenceTime: 0,
       preProcessingTime: 0,
@@ -56,51 +56,6 @@ class _HomeViewState extends State<HomeView> {
               ),
             ),
           ),
-
-          // Bottom Sheet
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: DraggableScrollableSheet(
-              initialChildSize: 0.4,
-              minChildSize: 0.1,
-              maxChildSize: 0.5,
-              builder: (_, ScrollController scrollController) => Container(
-                width: double.maxFinite,
-                decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
-                    borderRadius: BORDER_RADIUS_BOTTOM_SHEET),
-                child: SingleChildScrollView(
-                  controller: scrollController,
-                  child: Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.keyboard_arrow_up,
-                            size: 48, color: Colors.orange),
-                        (stats != null)
-                            ? Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    StatsRow('Inference time:',
-                                        '${stats.inferenceTime} ms'),
-                                    StatsRow('Total prediction time:',
-                                        '${stats.totalElapsedTime} ms'),
-                                    StatsRow('Pre-processing time:',
-                                        '${stats.preProcessingTime} ms'),
-                                    StatsRow('Frame',
-                                        '${CameraViewSingleton.inputImageSize.width} X ${CameraViewSingleton.inputImageSize.height}'),
-                                  ],
-                                ),
-                              )
-                            : Container()
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          )
         ],
       ),
     );
@@ -139,21 +94,21 @@ class _HomeViewState extends State<HomeView> {
       topLeft: BOTTOM_SHEET_RADIUS, topRight: BOTTOM_SHEET_RADIUS);
 }
 
-/// Row for one Stats field
-class StatsRow extends StatelessWidget {
-  final String left;
-  final String right;
+// /// Row for one Stats field
+// class StatsRow extends StatelessWidget {
+//   final String left;
+//   final String right;
 
-  StatsRow(this.left, this.right);
+//   StatsRow(this.left, this.right);
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [Text(left), Text(right)],
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.only(bottom: 8.0),
+//       child: Row(
+//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//         children: [Text(left), Text(right)],
+//       ),
+//     );
+//   }
+// }

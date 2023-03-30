@@ -23,7 +23,7 @@ class Classifier {
   // initialize model inference related variables
   static const int inputSize = 300;
   static const double threshold = 0.5;
-  static const int numResults = 10;
+  static const int numResults = 1;
 
   late int paddingSize;
 
@@ -35,16 +35,13 @@ class Classifier {
 
   // CONSTRUCTER
   // Initiates interpreter and labels from asset
-  Classifier({
-    Interpreter? interpreter,
-    List<String>? labels,
-  }) {
-    loadModel(interpreter: interpreter);
-    loadLabels(labels: labels);
+  Classifier() {
+    loadModel();
+    loadLabels();
   }
 
   // Loads interpreter from asset
-  void loadModel({Interpreter? interpreter}) async {
+  void loadModel() async {
     try {
       _interpreter = await Interpreter.fromAsset(
           modelFileName,
@@ -63,7 +60,7 @@ class Classifier {
   }
 
   // Load labels from assets
-  void loadLabels({List<String>? labels}) async {
+  void loadLabels() async {
     try {
       _labels = await FileUtil.loadLabels("assets/$labelFileName");
     } catch (e) {
@@ -72,36 +69,29 @@ class Classifier {
   }
 
   // PRE-PROCESSING
-  TensorImage getProcessedImage(TensorImage inputImg) {
+  TensorImage preprocess(TensorImage inputImg) {
     paddingSize = max(inputImg.height, inputImg.width);
 
-    if (imageProcessor == null) {
-      imageProcessor = ImageProcessorBuilder()
-        .add(ResizeWithCropOrPadOp(paddingSize, paddingSize))
-        .add(ResizeOp(inputSize, inputSize, ResizeMethod.BILINEAR))
-        .build();
-    }
-
+    imageProcessor ??= ImageProcessorBuilder()
+                        .add(ResizeWithCropOrPadOp(paddingSize, paddingSize))
+                        .add(ResizeOp(inputSize, inputSize, ResizeMethod.BILINEAR))
+                        .build();
+    
     inputImg = imageProcessor.process(inputImg);
 
     return inputImg;
   }
 
   // Runs object detection on the input images
-  Map<String, dynamic>? predict(imageLib.Image image) {
+  Map<String, dynamic> predict(imageLib.Image image) {
     var predictStart = DateTime.now().millisecondsSinceEpoch;
-
-    if(_interpreter == null) {
-      print("Interpreter is not initialized");
-      return null;
-    }
 
     // IMAGE PRE-PROCESSING
     // Image -> 300*300*3 TensorImage
     var preProcessStart = DateTime.now().millisecondsSinceEpoch;
 
     TensorImage inputImg = TensorImage.fromImage(image);
-    inputImg = getProcessedImage(inputImg);
+    inputImg = preprocess(inputImg);
 
     var preProcessElapsedTime = DateTime.now().millisecondsSinceEpoch - preProcessStart;
 
