@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:twentyone_days/config/theme/tree.dart';
 import 'package:twentyone_days/core/params/my_marker.dart';
 import 'package:twentyone_days/pages/map/add_marker_message.dart';
 import '../../config/theme/color.dart';
@@ -40,7 +41,7 @@ class AddMarkerPopup extends StatelessWidget {
                       ),
                       Center(
                         child: Image.asset(
-                          'assets/images/tree_imsi.png',
+                          myTree,
                           height: 240,
                         ),
                       ),

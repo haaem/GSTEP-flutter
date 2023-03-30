@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:twentyone_days/config/theme/tree.dart';
 import '../../config/theme/color.dart';
 import '../../config/theme/text/body_text.dart';
 
@@ -61,6 +62,8 @@ class _MarkerPopupState extends State<MarkerPopup> {
   @override
   Widget build(BuildContext context) {
     getUser();
+    var step = user['Step'];
+    var treeName = 'assets/images/tree_green_${step}.png';
 
     return AlertDialog(
         insetPadding: EdgeInsets.zero,
@@ -90,7 +93,7 @@ class _MarkerPopupState extends State<MarkerPopup> {
                       ),
                       Center(
                         child: Image.asset(
-                          'assets/images/tree_imsi.png',
+                          treeName,
                           width: 190,
                         ),
                       ),

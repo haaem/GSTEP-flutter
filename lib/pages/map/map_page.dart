@@ -111,7 +111,7 @@ class _MapPageState extends State<MapPage> {
             myLocationButtonEnabled: true,
             mapToolbarEnabled: false,
             markers: markers,
-            minMaxZoomPreference: MinMaxZoomPreference(15, 25),
+            minMaxZoomPreference: MinMaxZoomPreference(15, 30),
           ),
           // 메인페이지로 돌아가기
           Positioned(
