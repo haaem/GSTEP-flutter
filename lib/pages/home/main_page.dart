@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
@@ -25,7 +25,6 @@ class _MainPageState extends State<MainPage> {
   Future<bool> permission() async {
     Map<per.Permission, per.PermissionStatus> status =
         await [per.Permission.location].request(); // [] 권한배열에 권한을 작성
-
     if (await per.Permission.location.isGranted) {
       return Future.value(true);
     } else {
@@ -55,6 +54,27 @@ class _MainPageState extends State<MainPage> {
     );
     var res = await http.get(markerUrl);
     totalMarker = jsonDecode(res.body);
+  }
+
+  Future stepSetting() async {
+    final url = Uri.parse(
+      'http://34.64.137.128:8080/user/${userId}/',
+    );
+    var resp = await http.get(url);
+    var total = jsonDecode(resp.body);
+    var milestone = total['Milestone'];
+    return milestone;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    stepSetting().then((value) {
+      setState(() {
+        milestone = value;
+      });
+    });
+    super.initState();
   }
 
   @override

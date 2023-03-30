@@ -3,6 +3,7 @@ import 'package:twentyone_days/config/theme/color.dart';
 import 'package:twentyone_days/config/theme/tree.dart';
 import 'package:twentyone_days/config/theme/text/body_text.dart';
 import 'package:get/get.dart';
+import 'package:twentyone_days/core/params/user.dart';
 
 class TreeSetting extends StatefulWidget {
   const TreeSetting({Key? key}) : super(key: key);
@@ -12,6 +13,8 @@ class TreeSetting extends StatefulWidget {
 }
 
 class _TreeSettingState extends State<TreeSetting> {
+  var mineTree = myTree;
+
   @override
   Widget build(BuildContext context) {
     BorderRadiusGeometry radius = BorderRadius.only(
@@ -28,7 +31,7 @@ class _TreeSettingState extends State<TreeSetting> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Image.asset(myTree, height: 300,),
+                Image.asset(mineTree, height: 300,),
                 SizedBox(height: 40,),
                 Container(
                   height: 320,
@@ -49,7 +52,7 @@ class _TreeSettingState extends State<TreeSetting> {
                           GestureDetector(
                             child: Image.asset(tree_green_1, width: 50,),
                             onTap: () {
-                              myTree = tree_green_1;
+                              mineTree = tree_green_1;
                               treeColor = 1;
                               setState(() {});
                             },
@@ -57,7 +60,7 @@ class _TreeSettingState extends State<TreeSetting> {
                           GestureDetector(
                             child: Image.asset(tree_pink_1, width: 50,),
                             onTap: () {
-                              myTree = tree_pink_1;
+                              mineTree = tree_pink_1;
                               treeColor = 2;
                               setState(() {});
                             },
@@ -65,7 +68,7 @@ class _TreeSettingState extends State<TreeSetting> {
                           GestureDetector(
                             child: Image.asset(tree_blue_1, width: 50,),
                             onTap: () {
-                              myTree = tree_blue_1;
+                              mineTree = tree_blue_1;
                               treeColor = 3;
                               setState(() {});
                             },
@@ -73,7 +76,7 @@ class _TreeSettingState extends State<TreeSetting> {
                           GestureDetector(
                             child: Image.asset(tree_yel_1, width: 50,),
                             onTap: () {
-                              myTree = tree_yel_1;
+                              mineTree = tree_yel_1;
                               treeColor = 4;
                               setState(() {});
                             },
@@ -99,6 +102,20 @@ class _TreeSettingState extends State<TreeSetting> {
                           ),
                         ),
                         onTap: () {
+                          setState(() {
+                            late String temp;
+                            if (treeColor == 1) {
+                              temp = 'green';
+                            } else if (treeColor == 2) {
+                              temp = 'pink';
+                            } else if (treeColor == 3) {
+                              temp = 'blue';
+                            } else {
+                              temp = 'yel';
+                            }
+                            String treeName = 'assets/images/tree_${temp}_${userLevel}.png';
+                            myTree = treeName;
+                          });
                           Get.toNamed('/main');
                         },
                       )

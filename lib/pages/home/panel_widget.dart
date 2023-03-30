@@ -14,6 +14,7 @@ class PanelWidget extends StatefulWidget {
 }
 
 class _PanelWidgetState extends State<PanelWidget> {
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -73,13 +74,13 @@ class _PanelWidgetState extends State<PanelWidget> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    MissionRecord(date: '22 March', step: '4',),
-                    SizedBox(height: 8,),
-                    MissionRecord(date: '18 March', step: '3',),
-                    SizedBox(height: 8,),
-                    MissionRecord(date: '13 March', step: '2',),
-                    SizedBox(height: 8,),
-                    MissionRecord(date: '6 March', step: '1',),
+                    for (var data in milestone.keys)
+                      Column(
+                        children: [
+                          MissionRecord(date: milestone[data].substring(0,10), step: data),
+                          SizedBox(height: 8,),
+                        ],
+                      )
                   ],
                 ),
               ),
