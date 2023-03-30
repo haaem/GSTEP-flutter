@@ -6,18 +6,19 @@ import 'package:path_provider/path_provider.dart';
 
 class ImageUtils {
   /// Converts a [CameraImage] in YUV420 format to [imageLib.Image] in RGB format
-  static imageLib.Image? convertCameraImage(CameraImage cameraImage) {
+  static imageLib.Image convertCameraImage(CameraImage cameraImage) {
     if (cameraImage.format.group == ImageFormatGroup.yuv420) {
       return convertYUV420ToImage(cameraImage);
-    } else if (cameraImage.format.group == ImageFormatGroup.bgra8888) {
+    } else {// if (cameraImage.format.group == ImageFormatGroup.bgra8888) {
       return convertBGRA8888ToImage(cameraImage);
-    } else {
-      return null;
     }
+    // } else {
+    //   return null;
+    // }
   }
 
   /// Converts a [CameraImage] in BGRA888 format to [imageLib.Image] in RGB format
-  static imageLib.Image? convertBGRA8888ToImage(CameraImage cameraImage) {
+  static imageLib.Image convertBGRA8888ToImage(CameraImage cameraImage) {
     imageLib.Image img = imageLib.Image.fromBytes(cameraImage.planes[0].width ?? 0,
         cameraImage.planes[0].height?? 0, cameraImage.planes[0].bytes,
         format: imageLib.Format.bgra);

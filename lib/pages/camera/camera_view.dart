@@ -78,12 +78,13 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
       ///
       /// 352x288 on iOS, 240p (320x240) on Android with ResolutionPreset.low
       
-      Size? previewSize = cameraController.value.previewSize;
-      
+      // Size previewSize = cameraController.value.previewSize;
+
+      Size previewSize = Size(320, 240);
       /// previewSize is size of raw input image to the model
-      if (previewSize == null) {
-        previewSize = Size(320, 240);
-      }
+      // if (previewSize == null) {
+      //   previewSize = Size(320, 240);
+      // }
       CameraViewSingleton.inputImageSize = previewSize;
 
       // the display width of image on screen is
