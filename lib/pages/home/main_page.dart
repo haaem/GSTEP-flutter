@@ -166,19 +166,13 @@ class _MainPageState extends State<MainPage> {
                   },
                 ),
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(height: 120),
-                  Image.asset(
-                    myTree,
-                    width: 210,
-                  ),
-                  Center(
-                      child: SizedBox(
-                    height: 70,
-                  )),
-                ],
+              Positioned(
+                bottom: 410,
+                left: 30,
+                right: 30,
+                child: Image.asset(
+                  myTree,
+                ),
               ),
               Positioned(
                   bottom: 315,
