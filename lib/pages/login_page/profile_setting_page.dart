@@ -180,7 +180,8 @@ class ProfileSettingPageState extends State<ProfileSettingPage> {
                   profileSetting = true;
                   Get.toNamed('/color_setting');
                 } : null,
-              )
+              ),
+              SizedBox(height: 30,)
             ],
           ),
         ),

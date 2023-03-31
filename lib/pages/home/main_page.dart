@@ -187,8 +187,10 @@ class _MainPageState extends State<MainPage> {
                 left: 30,
                 right: 30,
                 child: Image.asset(
-                  //tree_blue_4
                   myTree,
+                  //tree_blue_4,
+                  height: MediaQuery.of(context).size.height * .35,
+
                 ),
               ),
               // 세팅 변경
