@@ -9,35 +9,47 @@ import 'package:twentyone_days/tflite/stats.dart';
 import 'package:twentyone_days/pages/camera/camera_view_singleton.dart';
 import 'package:twentyone_days/utils/isolate_utils.dart';
 
-/// [CameraView] sends each frame for inference
+/*
+* Widgets
+* - About Content (Widget): User name, current steps
+* - Detect Button (GestureDetector): navigate to CameraPage
+* - Mission List (Container): mission log of user
+*
+* Function
+* - Sends each frame for inference
+* - Initialize Camera and pass to cameraPage through parameter
+* - Load TFLite model and labels
+*
+* Todo
+* - Connect Server to get data(step, mission log)
+* - Load Model and label
+* - Change Mission List: Container -> ListView
+*
+* */
+
 class CameraView extends StatefulWidget {
-  /// Callback to pass results after inference to [HomeView]
+  // Callback to pass results after inference to [HomeView]
   final Function(List<Recognition> recognitions) resultsCallback;
+  // Callback to inference stats to [HomeView]
+  // final Function(Stats stats) statsCallback;
 
-  /// Callback to inference stats to [HomeView]
-  final Function(Stats stats) statsCallback;
+  final CameraController cameraController;
+  // const CameraView(this.resultsCallback, this.statsCallback, this.cameraController);
+  const CameraView(this.resultsCallback, this.cameraController);
+  // const CameraView(this.cameraController);
 
-  /// Constructor
-  const CameraView(this.resultsCallback, this.statsCallback);
   @override
   _CameraViewState createState() => _CameraViewState();
 }
 
 class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
-  /// List of available cameras
-  late List<CameraDescription> cameras;
-
-  /// Controller
+  // /// List of available cameras
+  // late List<CameraDescription> cameras;
+  //
   late CameraController cameraController;
-
-  /// true when inference is ongoing
-  late bool predicting;
-
-  /// Instance of [Classifier]
-  late Classifier classifier;
-
-  /// Instance of [IsolateUtils]
-  late IsolateUtils isolateUtils;
+  late bool predicting; // true when inference is ongoing
+  late Classifier classifier; /// Instance of [Classifier]
+  late IsolateUtils isolateUtils; /// Instance of [IsolateUtils]
 
   @override
   void initState() {
@@ -64,11 +76,12 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
 
   /// Initializes the camera by setting [cameraController]
   void initializeCamera() async {
-    cameras = await availableCameras();
-
-    // cameras[0] for rear-camera
-    cameraController =
-        CameraController(cameras[0], ResolutionPreset.low, enableAudio: false);
+    // cameras = await availableCameras();
+    //
+    // // cameras[0] for rear-camera
+    // cameraController =
+    //     CameraController(cameras[0], ResolutionPreset.low, enableAudio: false);
+    CameraController cameraController = widget.cameraController;
 
     cameraController.initialize().then((_) async {
       // Stream of image passed to [onLatestImageAvailable] callback
@@ -77,7 +90,6 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
       /// previewSize is size of each image frame captured by controller
       ///
       /// 352x288 on iOS, 240p (320x240) on Android with ResolutionPreset.low
-      
       // Size previewSize = cameraController.value.previewSize;
 
       Size previewSize = Size(320, 240);
@@ -97,11 +109,11 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    CameraController cameraController = widget.cameraController;
     // Return empty container while the camera is not initialized
     if (cameraController == null || !cameraController.value.isInitialized) {
       return Container();
     }
-
     return AspectRatio(
         aspectRatio: cameraController.value.aspectRatio,
         child: CameraPreview(cameraController));
@@ -114,7 +126,6 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
       if (predicting) {
         return;
       }
-
       setState(() {
         predicting = true;
       });
@@ -139,8 +150,8 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
       widget.resultsCallback(inferenceResults["recognitions"]);
 
       // pass stats to HomeView
-      widget.statsCallback((inferenceResults["stats"] as Stats)
-        ..totalElapsedTime = uiThreadInferenceElapsedTime);
+      // widget.statsCallback((inferenceResults["stats"] as Stats)
+      //   ..totalElapsedTime = uiThreadInferenceElapsedTime);
 
       // set predicting to false to allow new frames
       setState(() {

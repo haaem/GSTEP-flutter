@@ -7,10 +7,8 @@ import 'package:twentyone_days/pages/camera/camera_view_singleton.dart';
 class Recognition {
   /// Index of the result
   int _id;
-
   /// Label of the result
   String _label;
-
   /// Confidence [0.0, 1.0]
   double _score;
 
