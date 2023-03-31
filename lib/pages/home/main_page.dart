@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:developer';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
@@ -24,11 +24,14 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   Future<bool> permission() async {
-    Map<per.Permission, per.PermissionStatus> status =
-        await [per.Permission.location].request(); // [] 권한배열에 권한을 작성
-    if (await per.Permission.location.isGranted) {
+    if (Platform.isIOS) {
       return Future.value(true);
     } else {
+      per.Permission.location.request();
+      var status = await per.Permission.camera.status;
+      if (status.isGranted) {
+        return Future.value(true);
+      }
       return Future.value(false);
     }
   }
@@ -177,7 +180,7 @@ class _MainPageState extends State<MainPage> {
               ),
               // 나무 사진
               Positioned(
-                bottom: 380,
+                top: 200,
                 left: 30,
                 right: 30,
                 child: Image.asset(
@@ -187,7 +190,7 @@ class _MainPageState extends State<MainPage> {
               ),
               // 세팅 변경
               Positioned(
-                  bottom: 315,
+                  top: 480,
                   right: 30,
                   child: GestureDetector(
                     child: Container(
