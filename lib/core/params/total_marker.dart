@@ -1,1 +1,1 @@
-late var totalMarker;
+var totalMarker = [];

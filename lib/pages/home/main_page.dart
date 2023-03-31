@@ -43,7 +43,6 @@ class _MainPageState extends State<MainPage> {
       'http://34.64.137.128:8080/user/${userId}/',
     );
     var response = await http.get(url);
-    print(response.body);
     var userData = jsonDecode(response.body);
     userMissionProgress = userData['Progress'];
   }
@@ -74,6 +73,7 @@ class _MainPageState extends State<MainPage> {
         milestone = value;
       });
     });
+    mapSetting();
     super.initState();
   }
 
@@ -104,6 +104,7 @@ class _MainPageState extends State<MainPage> {
           decoration: BoxDecoration(color: backgroundColor),
           child: Stack(
             children: [
+              //맵
               Positioned(
                 top: 20,
                 left: 20,
