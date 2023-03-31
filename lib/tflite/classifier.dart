@@ -14,8 +14,8 @@ import 'stats.dart';
 // Constructor, Getters of model instance and labels are included
 class Classifier {
 
-  late Interpreter _interpreter;
-  late List<String> _labels;
+  Interpreter? _interpreter;
+  List<String>? _labels;
 
   static const String modelFileName = "detect.tflite";
   static const String labelFileName = "labels.txt";
@@ -23,68 +23,77 @@ class Classifier {
   // initialize model inference related variables
   static const int inputSize = 300;
   static const double threshold = 0.5;
-  static const int numResults = 1;
+  static const int numResults = 10;
 
-  late int paddingSize;
+  int? paddingSize;
 
-  late ImageProcessor imageProcessor;
+  ImageProcessor? imageProcessor;
 
   // Shape and Types of output tensors
-  late List<List<int>> _outputShapes;
-  late List<TfLiteType> _outputTypes;
+  List<List<int>>? _outputShapes;
+  List<TfLiteType>? _outputTypes;
 
   // CONSTRUCTER
   // Initiates interpreter and labels from asset
-  Classifier() {
-    loadModel();
-    loadLabels();
+  Classifier({
+    Interpreter? interpreter,
+    List<String>? labels,
+  }) {
+    loadModel(interpreter: interpreter);
+    loadLabels(labels: labels);
   }
 
   // Loads interpreter from asset
-  void loadModel() async {
+  void loadModel({Interpreter? interpreter}) async {
     try {
-      _interpreter = await Interpreter.fromAsset(
-          modelFileName,
-          options: InterpreterOptions()..threads = 4,
-      );
-      var outputTensors = _interpreter.getOutputTensors();
+      _interpreter = interpreter ??
+          await Interpreter.fromAsset(
+            modelFileName,
+            options: InterpreterOptions()..threads = 4,
+          );
+
+      var outputTensors = _interpreter?.getOutputTensors();
       _outputShapes = [];
       _outputTypes = [];
-      outputTensors.forEach((tensor) {
-        _outputShapes.add(tensor.shape);
-        _outputTypes.add(tensor.type);
-       });
+      outputTensors?.forEach((tensor) {
+        _outputShapes?.add(tensor.shape);
+        _outputTypes?.add(tensor.type);
+      });
     } catch (e) {
       print("Error while creating interpreter: $e");
     }
   }
 
   // Load labels from assets
-  void loadLabels() async {
+  void loadLabels({List<String>? labels}) async {
     try {
-      _labels = await FileUtil.loadLabels("assets/$labelFileName");
+      _labels =
+          labels ?? await FileUtil.loadLabels("assets/" + labelFileName);
     } catch (e) {
       print("Error while loading labels: $e");
     }
   }
-
   // PRE-PROCESSING
-  TensorImage preprocess(TensorImage inputImg) {
-    paddingSize = max(inputImg.height, inputImg.width);
+  TensorImage preprocess(TensorImage? inputImg) {
+    paddingSize = max(inputImg?.height ?? 0, inputImg?.width ?? 0);
 
     imageProcessor ??= ImageProcessorBuilder()
-                        .add(ResizeWithCropOrPadOp(paddingSize, paddingSize))
+                        .add(ResizeWithCropOrPadOp(paddingSize ?? 0, paddingSize ?? 0))
                         .add(ResizeOp(inputSize, inputSize, ResizeMethod.BILINEAR))
                         .build();
     
-    inputImg = imageProcessor.process(inputImg);
-
-    return inputImg;
+    inputImg = imageProcessor?.process(inputImg!);
+    return inputImg!;
   }
 
   // Runs object detection on the input images
-  Map<String, dynamic> predict(imageLib.Image image) {
+  Map<String, dynamic>? predict(imageLib.Image image) {
     var predictStart = DateTime.now().millisecondsSinceEpoch;
+    
+    if (_interpreter == null) {
+      print("Interpreter not initialized");
+      return null;
+    }
 
     // IMAGE PRE-PROCESSING
     // Image -> 300*300*3 TensorImage
@@ -96,10 +105,10 @@ class Classifier {
     var preProcessElapsedTime = DateTime.now().millisecondsSinceEpoch - preProcessStart;
 
     // TensorBuffers for 4-dimensions output tensors
-    TensorBuffer outputLocations = TensorBufferFloat(_outputShapes[0]);
-    TensorBuffer outputClasses = TensorBufferFloat(_outputShapes[1]);
-    TensorBuffer outputScores = TensorBufferFloat(_outputShapes[2]);
-    TensorBuffer numDetected = TensorBufferFloat(_outputShapes[3]);
+    TensorBuffer outputLocations = TensorBufferFloat(_outputShapes![0]);
+    TensorBuffer outputClasses = TensorBufferFloat(_outputShapes![1]);
+    TensorBuffer outputScores = TensorBufferFloat(_outputShapes![2]);
+    TensorBuffer numDetected = TensorBufferFloat(_outputShapes![3]);
 
     // inputs: List of inference results for multiple objects
     List<Object> inputs = [inputImg.buffer];
@@ -114,7 +123,7 @@ class Classifier {
     // runs inference for multiple inputs
     var inferenceStart = DateTime.now().millisecondsSinceEpoch;
 
-    _interpreter.runForMultipleInputs(inputs, outputs);
+    _interpreter?.runForMultipleInputs(inputs, outputs);
 
     var inferenceElapsedTime = DateTime.now().millisecondsSinceEpoch - inferenceStart;
 
@@ -140,12 +149,12 @@ class Classifier {
 
       var score = outputScores.getDoubleValue(i);
       var labelIndex = outputClasses.getIntValue(i) + labelOffset;
-      var label = _labels.elementAt(labelIndex);
+      var label = _labels?.elementAt(labelIndex);
 
       if (score > threshold) {
         // [locations] corresponds to the image size 300 X 300
         // inverseTransformRect transforms it our [inputImage]
-        Rect transformedRect = imageProcessor.inverseTransformRect(
+        Rect? transformedRect = imageProcessor?.inverseTransformRect(
             locations[i], image.height, image.width);
 
         recognitions.add(
@@ -162,12 +171,12 @@ class Classifier {
           totalPredictTime: predictElapsedTime,
           inferenceTime: inferenceElapsedTime,
           preProcessingTime: preProcessElapsedTime,
-          totalElapsedTime: 0)
+        )
     };
   }
 
   // GETTERS
-  Interpreter get interpreter => _interpreter;
-  List<String> get labels => _labels;
+  Interpreter? get interpreter => _interpreter;
+  List<String>? get labels => _labels;
 
 }

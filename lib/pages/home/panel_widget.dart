@@ -92,7 +92,7 @@ class _PanelWidgetState extends State<PanelWidget> {
                   late var availableCamera;
                   if (accept) {
                     availableCamera = await getCameraController();
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => CameraPage(cameraController: availableCamera)));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => CameraPage()));
                   } else {
                     showDialog(
                         context: context,

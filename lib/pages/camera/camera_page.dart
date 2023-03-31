@@ -5,7 +5,7 @@ import 'package:twentyone_days/tflite/recognition.dart';
 import 'package:twentyone_days/tflite/stats.dart';
 import 'package:twentyone_days/pages/camera/box_widget.dart';
 import 'package:twentyone_days/pages/camera/camera_view_singleton.dart';
-import 'package:camera/camera.dart';
+
 import 'camera_view.dart';
 
 /*
@@ -26,8 +26,8 @@ import 'camera_view.dart';
 * */
 
 class CameraPage extends StatefulWidget {
-  final CameraController cameraController;
-  const CameraPage({Key? key, required this.cameraController}) : super(key: key);
+
+  const CameraPage({super.key});
 
   @override
   State<CameraPage> createState() => _CameraPageState();
@@ -35,103 +35,77 @@ class CameraPage extends StatefulWidget {
 
 class _CameraPageState extends State<CameraPage> {
 
-  late CameraController controller;
-
   List<Recognition> results = [];
-
-  // Stats stats = Stats(
-  //     totalPredictTime: 0,
-  //     inferenceTime: 0,
-  //     preProcessingTime: 0,
-  //     totalElapsedTime: 0);
-
-  @override
-  void initState() {
-    super.initState();
-    // load model
-    controller = widget.cameraController;
-    controller.initialize().then((_) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {});
-    }).catchError((Object e) {
-      if (e is CameraException) {
-        switch (e.code) {
-          case 'CameraAccessDenied':
-            break;
-          default:
-          // Handle other errors here.
-            break;
-        }
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  /// Scaffold Key
-  // GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+  Stats? stats;
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
-    if (!controller.value.isInitialized) {
-      return Container();
-    }
     return Scaffold(
-        body: Stack(
-          children: <Widget>[
-            // CameraView(resultsCallback, statsCallback, widget.cameraController),
-            CameraView(resultsCallback, widget.cameraController),
-            //CameraView(widget.cameraController),
-            //boundingBoxes(results),
-            // CameraPreview(controller),
-            boundingBoxes(results),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Container(
-                padding: EdgeInsets.only(top: 20),
-                child: Text(
-                  'Detect New Step!',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontSize: 18, color: primaryGrey),
+      key: scaffoldKey,
+      backgroundColor: primaryGrey,
+      body: Stack(
+        children: <Widget>[
+          CameraView(resultsCallback, statsCallback),
+          boundingBoxes(results),
+          Align(
+            alignment: Alignment.topLeft,
+            child: Container(
+              padding: EdgeInsets.only(top: 20),
+              child: Text(
+                'Detect New Step!',
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 18, color: primaryGrey),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: DraggableScrollableSheet(
+              initialChildSize: 0.4,
+              minChildSize: 0.1,
+              maxChildSize: 0.5,
+              builder: (_, ScrollController scrollController) => Container(
+                width: double.maxFinite,
+                decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.9),
+                    borderRadius: BORDER_RADIUS_BOTTOM_SHEET),
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.keyboard_arrow_up,
+                            size: 48, color: Colors.orange),
+                        (stats != null)
+                            ? Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    StatsRow('Inference time:',
+                                        '${stats?.inferenceTime} ms'),
+                                    StatsRow('Total prediction time:',
+                                        '${stats?.totalElapsedTime} ms'),
+                                    StatsRow('Pre-processing time:',
+                                        '${stats?.preProcessingTime} ms'),
+                                    StatsRow('Frame',
+                                        '${CameraViewSingleton.inputImageSize?.width} X ${CameraViewSingleton.inputImageSize?.height}'),
+                                  ],
+                                ),
+                              )
+                            : Container()
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
-          ],
-        )
+          )
+        ],
+      )
     );
   }
-
-  // return Scaffold(
-  //   // key: scaffoldKey,
-  //   backgroundColor: Colors.black,
-  //   body: Stack(
-  //     children: <Widget>[
-  //       // CameraView(resultsCallback, statsCallback, widget.cameraController),
-  //       // CameraView(resultsCallback, widget.cameraController),
-  //       //CameraView(widget.cameraController),
-  //       //boundingBoxes(results),
-  //       AspectRatio(
-  //       aspectRatio: widget.cameraController.value.aspectRatio,
-  //           child: CameraPreview(widget.cameraController)),
-  //       Align(
-  //         alignment: Alignment.topLeft,
-  //         child: Container(
-  //           padding: EdgeInsets.only(top: 20),
-  //           child: Text(
-  //             'Detect New Step!',
-  //             textAlign: TextAlign.left, style: TextStyle(fontSize: 18, color: primaryGrey),
-  //           ),
-  //         ),
-  //       ),
-  //     ],
-  //   ),
-  // );
 
   // Returns Stack of bounding boxes
   Widget boundingBoxes(List<Recognition> results) {
@@ -151,34 +125,34 @@ class _CameraPageState extends State<CameraPage> {
       this.results = results;
     });
   }
-}
+
   // Callback to get inference stats from [CameraView]
-  // void statsCallback(Stats stats) {
-  //   setState(() { this.stats = stats; });
-  // }
+  void statsCallback(Stats stats) {
+    setState(() { this.stats = stats; });
+  }
 
-  // static const BOTTOM_SHEET_RADIUS = Radius.circular(24.0);
-  // static const BORDER_RADIUS_BOTTOM_SHEET = BorderRadius.only(
-  //     topLeft: BOTTOM_SHEET_RADIUS, topRight: BOTTOM_SHEET_RADIUS);
-// }
+  static const BOTTOM_SHEET_RADIUS = Radius.circular(24.0);
+  static const BORDER_RADIUS_BOTTOM_SHEET = BorderRadius.only(
+      topLeft: BOTTOM_SHEET_RADIUS, topRight: BOTTOM_SHEET_RADIUS);
+}
 
-// /// Row for one Stats field
-// class StatsRow extends StatelessWidget {
-//   final String left;
-//   final String right;
+/// Row for one Stats field
+class StatsRow extends StatelessWidget {
+  final String left;
+  final String right;
 
-//   StatsRow(this.left, this.right);
+  StatsRow(this.left, this.right);
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.only(bottom: 8.0),
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//         children: [Text(left), Text(right)],
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [Text(left), Text(right)],
+      ),
+    );
+  }
+}
 
 

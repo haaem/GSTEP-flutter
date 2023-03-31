@@ -7,11 +7,11 @@ class Stats {
   // Time taken to pre-process the image
   int preProcessingTime;
 
-    int totalElapsedTime;
+  int? totalElapsedTime;
 
   Stats(
       {required this.totalPredictTime,
-       required this.totalElapsedTime,
+      this.totalElapsedTime,
       required this.inferenceTime,
       required this.preProcessingTime});
 

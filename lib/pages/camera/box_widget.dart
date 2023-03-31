@@ -9,9 +9,10 @@ class BoxWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Color for bounding box
-    Color color = Colors.primaries[
-        (result.label.length + result.label.codeUnitAt(0) + result.id) %
-            Colors.primaries.length];
+    Color color = Colors.primaries[((result.label?.length ?? 0) +
+            result.label!.codeUnitAt(0) +
+            (result.id ?? 0)) %
+        Colors.primaries.length];
 
     return Positioned(
       left: result.renderLocation.left,
@@ -32,8 +33,8 @@ class BoxWidget extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text(result.label),
-                  Text(" ${result.score.toStringAsFixed(2)}"),
+                  Text(result.label??''),
+                  Text(" ${result.score!.toStringAsFixed(2)}"),
                 ],
               ),
             ),
