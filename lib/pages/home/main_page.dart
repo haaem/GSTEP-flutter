@@ -211,7 +211,29 @@ class _MainPageState extends State<MainPage> {
                     onTap: () {
                       Get.toNamed('/color_setting');
                     },
-                  ))
+                  )),
+              //제출 전에 지우기
+              Positioned(
+                bottom: 350,
+                right: 30,
+                child: GestureDetector(
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: Colors.white70,
+                      ),
+                      child: Icon(
+                        Icons.autorenew_rounded,
+                        color: Colors.black54,
+                      ),
+                    ),
+                    onTap: () {
+                      Get.toNamed('/explain');
+                    },
+                )
+              )
             ],
           ),
         ),

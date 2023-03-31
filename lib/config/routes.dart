@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:twentyone_days/pages/camera/mission_explanation_page.dart';
 import 'package:twentyone_days/pages/home/main_page.dart';
 import 'package:twentyone_days/pages/login_page/login_page.dart';
 import 'package:twentyone_days/pages/login_page/profile_setting_page.dart';
@@ -37,6 +38,11 @@ final List<GetPage> routes = [
   GetPage(
     name: '/profile_setting',
     page: () => const ProfileSettingPage(),
+    transition: Transition.fade,
+  ),
+  GetPage(
+    name: '/explain',
+    page: () => const MissionExplanationPage(),
     transition: Transition.fade,
   ),
 ];
