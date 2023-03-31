@@ -4,7 +4,7 @@
 In today's world, it's hard to feel the impact of environmental changes. We hear news about climate change, endangered species, and warnings from scientists, yet many people seem indifferent. Even those who do care often find it difficult to see the results of their actions, as the earth is so vast that the actions of a single person seem insignificant. This is the problem we want to solve: to provide feedback to those who take action towards creating a better world, since in the real world, feedback is often lacking.
 
 ## ️❗ Sustainable Development Goals
-<img src="https://user-images.githubusercontent.com/113160789/229126005-9464e46a-ed95-4553-9b6c-56743e631c7b.png">
+<img src="https://user-images.githubusercontent.com/113160789/229126005-9464e46a-ed95-4553-9b6c-56743e631c7b.png" width="500">
 
 ## 📹 Demo Video Link
 
