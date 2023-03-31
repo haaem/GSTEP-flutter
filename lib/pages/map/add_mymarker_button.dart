@@ -5,10 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:twentyone_days/config/theme/color.dart';
 import 'package:twentyone_days/config/theme/text/body_text.dart';
 import 'package:http/http.dart' as http;
-import 'package:twentyone_days/pages/map/add_marker_message.dart';
 import 'package:twentyone_days/pages/map/add_marker_popup.dart';
-import '../../core/params/my_marker.dart';
-import '../../core/params/user.dart';
 
 class MyMarker extends StatefulWidget {
   const MyMarker({Key? key, required this.latLng}) : super(key: key);
@@ -58,6 +55,7 @@ class _MyMarkerState extends State<MyMarker> {
                   size: 17,
                   textAlign: TextAlign.start,
                 ),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                 actions: [
                   ElevatedButton(
                     onPressed: () {
@@ -74,6 +72,7 @@ class _MyMarkerState extends State<MyMarker> {
                     ),
                   ),
                 ],
+                actionsPadding: EdgeInsets.only(bottom: 15, right: 15),
               ));
         }
       },
@@ -82,18 +81,15 @@ class _MyMarkerState extends State<MyMarker> {
 
   Future<bool> checkMarker() async {
     final url = Uri.parse(
-      'http://34.64.137.128:8080/marker/',
+      'http://34.64.137.128:8080/marker/check/',
     );
     final response = await http.post(url, body: {
       "Longitude": widget.latLng.longitude.toString(),
       "Latitude": widget.latLng.latitude.toString(),
-      "UserID": userId.toString()
     });
-    if (response.statusCode == 500) {
-      return Future.value(false);
+    if (response.statusCode == 200) {
+      return Future.value(true);
     }
-    var markerData = jsonDecode(response.body);
-    markerId = markerData['ID'];
-    return Future.value(true);
+    return Future.value(false);
   }
 }

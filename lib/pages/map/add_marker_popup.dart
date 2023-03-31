@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:twentyone_days/config/theme/tree.dart';
 import 'package:twentyone_days/core/params/my_marker.dart';
-import 'package:twentyone_days/pages/map/add_marker_message.dart';
+import 'package:http/http.dart' as http;
 import '../../config/theme/color.dart';
 import '../../config/theme/text/body_text.dart';
+import '../../core/params/user.dart';
 
 class AddMarkerPopup extends StatelessWidget {
   const AddMarkerPopup({Key? key, required this.lat, required this.long}) : super(key: key);
@@ -40,7 +44,7 @@ class AddMarkerPopup extends StatelessWidget {
                       ),
                       Center(
                         child: Image.asset(
-                          'assets/images/tree_imsi.png',
+                          myTree,
                           height: 240,
                         ),
                       ),
@@ -87,7 +91,8 @@ class AddMarkerPopup extends StatelessWidget {
                       onTap: () {
                         markerLatitude = lat;
                         markerLongitude = long;
-                        MessageAddPopup();
+                        postMarker();
+                        Get.toNamed('/main');
                       },
                     ),
                     GestureDetector(
@@ -111,5 +116,18 @@ class AddMarkerPopup extends StatelessWidget {
             ),
           );
         }));
+  }
+
+  void postMarker() async {
+    final url = Uri.parse(
+      'http://34.64.137.128:8080/marker/',
+    );
+    final response = await http.post(url, body: {
+      "Longitude": markerLongitude.toString(),
+      "Latitude": markerLatitude.toString(),
+      "UserID": userId.toString()
+    });
+    var markerData = jsonDecode(response.body);
+    markerId = markerData['ID'];
   }
 }

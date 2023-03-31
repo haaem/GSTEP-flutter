@@ -39,8 +39,8 @@ dependencies:
   #sliding_up_panel
   sliding_up_panel: ^2.0.0+1
 
-  #점선
-  dotted_line: ^3.1.0
+  #progress_bar
+  percent_indicator: ^4.2.3
 
   #TFlite
   tflite_flutter: ^0.9.0

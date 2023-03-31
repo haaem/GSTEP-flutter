@@ -1,15 +1,19 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:twentyone_days/config/theme/color.dart';
 import 'package:twentyone_days/config/theme/text/body_text.dart';
 import 'package:twentyone_days/config/theme/tree.dart';
+import 'package:twentyone_days/core/params/total_marker.dart';
+import 'package:twentyone_days/core/params/user.dart';
 import 'package:twentyone_days/pages/home/panel_widget.dart';
 import 'package:permission_handler/permission_handler.dart' as per;
-import 'package:twentyone_days/config/theme/color.dart';
+import 'package:twentyone_days/pages/home/progress_bar.dart';
 import 'package:twentyone_days/pages/map/map_page.dart';
+import 'package:http/http.dart' as http;
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -20,12 +24,14 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   Future<bool> permission() async {
-    Map<per.Permission, per.PermissionStatus> status =
-        await [per.Permission.location].request(); // [] 권한배열에 권한을 작성
-
-    if (await per.Permission.location.isGranted) {
+    if (Platform.isIOS) {
       return Future.value(true);
     } else {
+      per.Permission.location.request();
+      var status = await per.Permission.camera.status;
+      if (status.isGranted) {
+        return Future.value(true);
+      }
       return Future.value(false);
     }
   }
@@ -34,6 +40,45 @@ class _MainPageState extends State<MainPage> {
     Location location = Location();
     final position = await location.getLocation();
     return position;
+  }
+
+  void missionSetting() async {
+    final url = Uri.parse(
+      'http://34.64.137.128:8080/user/${userId}/',
+    );
+    var response = await http.get(url);
+    var userData = jsonDecode(response.body);
+    userMissionProgress = userData['Progress'];
+  }
+
+  void mapSetting() async {
+    final markerUrl = Uri.parse(
+      'http://34.64.137.128:8080/marker/',
+    );
+    var res = await http.get(markerUrl);
+    totalMarker = jsonDecode(res.body);
+  }
+
+  Future stepSetting() async {
+    final url = Uri.parse(
+      'http://34.64.137.128:8080/user/${userId}/',
+    );
+    var resp = await http.get(url);
+    var total = jsonDecode(resp.body);
+    var milestone = total['Milestone'];
+    return milestone;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    stepSetting().then((value) {
+      setState(() {
+        milestone = value;
+      });
+    });
+    mapSetting();
+    super.initState();
   }
 
   @override
@@ -63,6 +108,7 @@ class _MainPageState extends State<MainPage> {
           decoration: BoxDecoration(color: backgroundColor),
           child: Stack(
             children: [
+              //맵
               Positioned(
                 top: 20,
                 left: 20,
@@ -76,6 +122,7 @@ class _MainPageState extends State<MainPage> {
                     var accept = await permission();
                     if (accept) {
                       current = await getCurrentLocation();
+                      mapSetting();
                       Navigator.push(context, MaterialPageRoute(builder: (context) => MapPage(location: current)));
                     } else {
                       showDialog(
@@ -109,6 +156,7 @@ class _MainPageState extends State<MainPage> {
                   },
                 ),
               ),
+              // 미션 버튼
               Positioned(
                 top: 20,
                 right: 20,
@@ -119,26 +167,30 @@ class _MainPageState extends State<MainPage> {
                     color: Colors.white,
                   ),
                   onPressed: () {
+                    missionSetting();
                     Get.toNamed('/mission');
                   },
                 ),
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(height: 120),
-                  Image.asset(
-                    myTree,
-                    width: 210,
-                  ),
-                  Center(
-                      child: SizedBox(
-                    height: 70,
-                  )),
-                ],
-              ),
               Positioned(
-                  bottom: 315,
+                top: 100,
+                left: 32,
+                right: 32,
+                child: ProgressBar(),
+              ),
+              // 나무 사진
+              Positioned(
+                top: 200,
+                left: 30,
+                right: 30,
+                child: Image.asset(
+                  //tree_blue_4
+                  myTree,
+                ),
+              ),
+              // 세팅 변경
+              Positioned(
+                  top: 480,
                   right: 30,
                   child: GestureDetector(
                     child: Container(

@@ -15,6 +15,7 @@ class PanelWidget extends StatefulWidget {
 }
 
 class _PanelWidgetState extends State<PanelWidget> {
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
@@ -23,7 +24,7 @@ class _PanelWidgetState extends State<PanelWidget> {
       controller: widget.controller,
       children: [
         buildAboutContent(width),
-        SizedBox(height: 50,)
+        //SizedBox(height: 20,)
       ],
     );
   }
@@ -47,7 +48,7 @@ class _PanelWidgetState extends State<PanelWidget> {
             children: [
               BodyText(text: userName, color: primaryBlack, weight: FontWeight.w600, size: 18,),
               SizedBox(height: 17,),
-              BodyText(text: 'You took 4 steps towards greener\nworld!', color: primaryGrey, size: 18,),
+              BodyText(text: 'You took ${userLevel} steps towards greener\nworld!', color: primaryGrey, size: 18,),
               SizedBox(height: 20,),
               GestureDetector(
                 child: Container(
@@ -75,13 +76,13 @@ class _PanelWidgetState extends State<PanelWidget> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    MissionRecord(date: '22 March',),
-                    SizedBox(height: 8,),
-                    MissionRecord(date: '18 March',),
-                    SizedBox(height: 8,),
-                    MissionRecord(date: '13 March',),
-                    SizedBox(height: 8,),
-                    MissionRecord(date: '6 March',),
+                    for (var data in milestone.keys)
+                      Column(
+                        children: [
+                          MissionRecord(date: milestone[data].substring(0,10), step: data),
+                          SizedBox(height: 8,),
+                        ],
+                      )
                   ],
                 ),
               ),
