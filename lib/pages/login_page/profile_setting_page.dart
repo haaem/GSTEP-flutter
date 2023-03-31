@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:twentyone_days/config/theme/color.dart';
 import 'package:twentyone_days/config/theme/text/body_text.dart';
@@ -175,6 +177,7 @@ class ProfileSettingPageState extends State<ProfileSettingPage> {
                 ),
                 onPressed: _isValid? () async {
                   upload();
+                  profileSetting = true;
                   Get.toNamed('/color_setting');
                 } : null,
               )
@@ -198,10 +201,12 @@ class ProfileSettingPageState extends State<ProfileSettingPage> {
     var userData = jsonDecode(response.body);
     userId = userData['ID'];
     userLevel = userData['Step'];
+    userPoint = userData['Point'];
+    milestone = userData['Milestone'];
 
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
-    print('Response headers: ${response.headers}');
+    log('Response status: ${response.statusCode}');
+    log('Response body: ${response.body}');
+    log('Response headers: ${response.headers}');
 
     // final res2 = await http.get(
     //   Uri.parse(

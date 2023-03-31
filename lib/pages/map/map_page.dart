@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
@@ -6,7 +5,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:twentyone_days/config/theme/color.dart';
 import 'package:twentyone_days/core/params/my_marker.dart';
-import 'package:twentyone_days/data/marker_sample_data.dart';
+import 'package:twentyone_days/core/params/total_marker.dart';
+import 'package:twentyone_days/core/params/user.dart';
 import 'package:twentyone_days/pages/map/add_mymarker_button.dart';
 import 'package:twentyone_days/pages/map/marker_popup.dart';
 
@@ -20,7 +20,6 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   late GoogleMapController mapController;
-
   late var currentGps;
   late var markerIcon;
   Set<Marker> markers = Set();
@@ -31,6 +30,7 @@ class _MapPageState extends State<MapPage> {
   @override
   void initState() {
     // TODO: implement initState
+    currentGps = widget.location;
     getCurrentLocation().then((value) {
       setState(() {
         currentGps = value;
@@ -51,6 +51,33 @@ class _MapPageState extends State<MapPage> {
     mapController.dispose();
   }
 
+  void _onMapCreated(GoogleMapController controller) async {
+    mapController =  controller;
+    Set<Marker> markersSet = {};
+    for (int i = 0; i < totalMarker.length; i++) {
+      if (totalMarker[i]["UserID"] == userId){
+        markerIcon = await BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(),
+            "assets/images/marker_mine.png");
+      } else {
+        markerIcon = await BitmapDescriptor.fromAssetImage(
+          ImageConfiguration(),
+          "assets/images/marker_others.png",
+        );
+      }
+      markersSet.add(Marker(
+          markerId: MarkerId(totalMarker[i]["ID"].toString()),
+          position: LatLng(totalMarker[i]["Latitude"], totalMarker[i]["Longitude"]),
+          icon: markerIcon,
+          //팝업
+          onTap: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) => MarkerPopup(user: totalMarker[i]["UserID"], time: totalMarker[i]["CreatedAt"].substring(0,10),));
+          }));
+    }
+  }
+
   // 현재위치
   Future<LocationData> getCurrentLocation() async {
     Location location = Location();
@@ -62,20 +89,26 @@ class _MapPageState extends State<MapPage> {
   Future<Set<Marker>> _createMarker() async {
     //마커 이미지 변환 & 마커 추가
     Set<Marker> markersSet = {};
-    for (int i = 0; i < markerList.length; i++) {
-      var markerIcon = await BitmapDescriptor.fromAssetImage(
+    for (int i = 0; i < totalMarker.length; i++) {
+      if (totalMarker[i]["UserID"] == userId){
+        markerIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(),
-        "assets/images/marker_others.png",
-      );
+        "assets/images/marker_mine.png");
+      } else {
+        markerIcon = await BitmapDescriptor.fromAssetImage(
+          ImageConfiguration(),
+          "assets/images/marker_others.png",
+        );
+      }
       markersSet.add(Marker(
-          markerId: MarkerId(markerList[i].markerId),
-          position: LatLng(markerList[i].latitude, markerList[i].longitude),
+          markerId: MarkerId(totalMarker[i]["ID"].toString()),
+          position: LatLng(totalMarker[i]["Latitude"], totalMarker[i]["Longitude"]),
           icon: markerIcon,
           //팝업
           onTap: () {
             showDialog(
                 context: context,
-                builder: (BuildContext context) => MarkerPopup());
+                builder: (BuildContext context) => MarkerPopup(user: totalMarker[i]["UserID"], time: totalMarker[i]["CreatedAt"].substring(0,10),));
           }));
     }
     return markersSet;
@@ -83,21 +116,13 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
-    _createMarker().then((value) {
-      setState(() {
-        markers = value;
-      });
-    });
-
 
     return SafeArea(
         child: Scaffold(
       body: Stack(
         children: [
           GoogleMap(
-            onMapCreated: (GoogleMapController controller) {
-              mapController = controller;
-            },
+            onMapCreated: _onMapCreated,
             initialCameraPosition: CameraPosition(
               target: _center,
               zoom: 15,
@@ -106,7 +131,7 @@ class _MapPageState extends State<MapPage> {
             myLocationButtonEnabled: true,
             mapToolbarEnabled: false,
             markers: markers,
-            minMaxZoomPreference: MinMaxZoomPreference(15, 20),
+            minMaxZoomPreference: MinMaxZoomPreference(15, 30),
           ),
           // 메인페이지로 돌아가기
           Positioned(
@@ -123,24 +148,6 @@ class _MapPageState extends State<MapPage> {
             top: 7,
             left: 10,
           ),
-          // 내위치
-          // Positioned(
-          //   child: FloatingActionButton(
-          //     onPressed: () async {
-          //       currentGps = await getCurrentLocation();
-          //       mapController.animateCamera(CameraUpdate.newLatLng(
-          //           LatLng(currentGps.latitude, currentGps.longitude)));
-          //       setState(() {});
-          //     },
-          //     child: Icon(
-          //       Icons.my_location_rounded,
-          //       color: primaryBlack,
-          //     ),
-          //     backgroundColor: Colors.white,
-          //   ),
-          //   bottom: 105,
-          //   right: 15,
-          // ),
           Positioned(
             child: MyMarker(
                 latLng: LatLng(currentGps.latitude, currentGps.longitude)),
