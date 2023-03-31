@@ -118,7 +118,9 @@ class _MissionButtonState extends State<MissionButton> {
               );
               final res2 = await http.get(url);
               var userData = jsonDecode(res2.body);
-              userMissionProgress = jsonDecode(userData['Progress']);
+              userMissionProgress = userData['Progress'];
+              userPoint = userData['Point'];
+              userLevel = userData['Step'];
               setState(() {});
             }
           },

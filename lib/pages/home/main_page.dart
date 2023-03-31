@@ -11,6 +11,7 @@ import 'package:twentyone_days/core/params/total_marker.dart';
 import 'package:twentyone_days/core/params/user.dart';
 import 'package:twentyone_days/pages/home/panel_widget.dart';
 import 'package:permission_handler/permission_handler.dart' as per;
+import 'package:twentyone_days/pages/home/progress_bar.dart';
 import 'package:twentyone_days/pages/map/map_page.dart';
 import 'package:http/http.dart' as http;
 
@@ -152,6 +153,7 @@ class _MainPageState extends State<MainPage> {
                   },
                 ),
               ),
+              // 미션 버튼
               Positioned(
                 top: 20,
                 right: 20,
@@ -168,13 +170,22 @@ class _MainPageState extends State<MainPage> {
                 ),
               ),
               Positioned(
-                bottom: 410,
+                top: 100,
+                left: 32,
+                right: 32,
+                child: ProgressBar(),
+              ),
+              // 나무 사진
+              Positioned(
+                bottom: 380,
                 left: 30,
                 right: 30,
                 child: Image.asset(
+                  //tree_blue_4
                   myTree,
                 ),
               ),
+              // 세팅 변경
               Positioned(
                   bottom: 315,
                   right: 30,

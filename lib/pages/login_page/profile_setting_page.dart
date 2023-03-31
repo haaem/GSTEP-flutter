@@ -201,6 +201,7 @@ class ProfileSettingPageState extends State<ProfileSettingPage> {
     var userData = jsonDecode(response.body);
     userId = userData['ID'];
     userLevel = userData['Step'];
+    userPoint = userData['Point'];
     milestone = userData['Milestone'];
 
     log('Response status: ${response.statusCode}');
