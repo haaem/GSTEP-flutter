@@ -88,7 +88,7 @@ class AddMarkerPopup extends StatelessWidget {
                       onTap: () {
                         markerLatitude = lat;
                         markerLongitude = long;
-                        MessageAddPopup();
+                        Get.toNamed('/main');
                       },
                     ),
                     GestureDetector(

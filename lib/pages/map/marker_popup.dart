@@ -145,11 +145,8 @@ class _MarkerPopupState extends State<MarkerPopup> {
                   ],
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 50,
                 ),
-                SizedBox(
-                  height: 35,
-                )
               ],
             ),
           );

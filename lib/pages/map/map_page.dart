@@ -7,7 +7,6 @@ import 'package:twentyone_days/config/theme/color.dart';
 import 'package:twentyone_days/core/params/my_marker.dart';
 import 'package:twentyone_days/core/params/total_marker.dart';
 import 'package:twentyone_days/core/params/user.dart';
-import 'package:twentyone_days/data/marker_sample_data.dart';
 import 'package:twentyone_days/pages/map/add_mymarker_button.dart';
 import 'package:twentyone_days/pages/map/marker_popup.dart';
 
@@ -31,6 +30,7 @@ class _MapPageState extends State<MapPage> {
   @override
   void initState() {
     // TODO: implement initState
+    currentGps = widget.location;
     getCurrentLocation().then((value) {
       setState(() {
         currentGps = value;
@@ -49,6 +49,33 @@ class _MapPageState extends State<MapPage> {
     // TODO: implement dispose
     super.dispose();
     mapController.dispose();
+  }
+
+  void _onMapCreated(GoogleMapController controller) async {
+    mapController =  controller;
+    Set<Marker> markersSet = {};
+    for (int i = 0; i < totalMarker.length; i++) {
+      if (totalMarker[i]["UserID"] == userId){
+        markerIcon = await BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(),
+            "assets/images/marker_mine.png");
+      } else {
+        markerIcon = await BitmapDescriptor.fromAssetImage(
+          ImageConfiguration(),
+          "assets/images/marker_others.png",
+        );
+      }
+      markersSet.add(Marker(
+          markerId: MarkerId(totalMarker[i]["ID"].toString()),
+          position: LatLng(totalMarker[i]["Latitude"], totalMarker[i]["Longitude"]),
+          icon: markerIcon,
+          //팝업
+          onTap: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) => MarkerPopup(user: totalMarker[i]["UserID"], time: totalMarker[i]["CreatedAt"].substring(0,10),));
+          }));
+    }
   }
 
   // 현재위치
@@ -89,20 +116,13 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
-    _createMarker().then((value) {
-      setState(() {
-        markers = value;
-      });
-    });
 
     return SafeArea(
         child: Scaffold(
       body: Stack(
         children: [
           GoogleMap(
-            onMapCreated: (GoogleMapController controller) {
-              mapController = controller;
-            },
+            onMapCreated: _onMapCreated,
             initialCameraPosition: CameraPosition(
               target: _center,
               zoom: 15,
