@@ -68,7 +68,6 @@ flutter:
     - assets/
     - assets/fonts/
     - assets/images/
-    - assets/model/
 
   fonts:
     - family: SFProThin
