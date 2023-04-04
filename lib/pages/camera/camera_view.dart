@@ -45,8 +45,12 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
   
   CameraController? cameraController;
   bool? predicting; // true when inference is ongoing
-  Classifier? classifier; /// Instance of [Classifier]
-  IsolateUtils? isolateUtils; /// Instance of [IsolateUtils]
+  Classifier? classifier; // Instance of [Classifier]
+  IsolateUtils? isolateUtils; // Instance of [IsolateUtils]
+
+  double? deviceRatio;
+  double? xScale;
+  double yScale = 1;
 
   @override
   void initState() {
@@ -71,34 +75,33 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
     predicting = false;
   }
 
-  /// Initializes the camera by setting [cameraController]
+  // Initializes the camera by setting [cameraController]
   void initializeCamera() async {
     cameras = await availableCameras();
-    //
-    // // cameras[0] for rear-camera
+    // cameras[0] for rear-camera
     cameraController =
-        CameraController(cameras![0], ResolutionPreset.low, enableAudio: false);
+        CameraController(cameras![0], ResolutionPreset.medium, enableAudio: false);
 
     cameraController?.initialize().then((_) async {
       // Stream of image passed to [onLatestImageAvailable] callback
       await cameraController?.startImageStream(onLatestImageAvailable);
 
-      /// previewSize is size of each image frame captured by controller
-      ///
-      /// 352x288 on iOS, 240p (320x240) on Android with ResolutionPreset.low
+      // previewSize is size of each image frame captured by controller
+      // 352x288 on iOS, 240p (320x240) on Android with ResolutionPreset.low
       Size? previewSize = cameraController?.value.previewSize;
 
-      /// previewSize is size of raw input image to the model
-      // if (previewSize == null) {
-      //   previewSize = Size(320, 240);
-      // }
       CameraViewSingleton.inputImageSize = previewSize;
 
       // the display width of image on screen is
       // same as screenWidth while maintaining the aspectRatio
       Size screenSize = MediaQuery.of(context).size;
+      // deviceRatio = screenSize.width / screenSize.height;
+      // xScale = cameraController!.value.aspectRatio / deviceRatio!;
+      // yScale = 1;
+
       CameraViewSingleton.screenSize = screenSize;
       CameraViewSingleton.ratio = screenSize.width / (previewSize?.height ?? 0);
+      //CameraViewSingleton.ratio = deviceRatio;
     });
   }
 
@@ -110,19 +113,23 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
     }
     return AspectRatio(
         aspectRatio: cameraController!.value.aspectRatio,
-        child: CameraPreview(cameraController!));
+        // aspectRatio: deviceRatio!,
+        child: CameraPreview(cameraController!)
+        // child: Transform(
+        //     alignment: Alignment.center,
+        //     transform: Matrix4.diagonal3Values(xScale!, yScale, 1),
+        //     child: CameraPreview(cameraController!)));
+    );
   }
 
-  /// Callback to receive each frame [CameraImage] perform inference on it
+  // Callback to receive each frame [CameraImage] perform inference on it
   onLatestImageAvailable(CameraImage cameraImage) async {
     if (classifier?.interpreter != null && classifier?.labels != null) {
       // If previous inference has not completed then return
       if (predicting ?? false) {
         return;
       }
-      setState(() {
-        predicting = true;
-      });
+      setState(() { predicting = true; });
 
       var uiThreadTimeStart = DateTime.now().millisecondsSinceEpoch;
 
@@ -130,31 +137,25 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
       var isolateData = IsolateData(
         cameraImage, classifier?.interpreter?.address ?? 0, classifier?.labels ?? []);
 
-      // We could have simply used the compute method as well however
-      // it would be as in-efficient as we need to continuously passing data
-      // to another isolate.
-
-      /// perform inference in separate isolate
+      // perform inference in separate isolate
       Map<String, dynamic> inferenceResults = await inference(isolateData);
 
       var uiThreadInferenceElapsedTime =
           DateTime.now().millisecondsSinceEpoch - uiThreadTimeStart;
 
-      // pass results to HomeView
+      // pass results to cameraPage
       widget.resultsCallback(inferenceResults["recognitions"]);
 
-      // pass stats to HomeView
+      // pass stats to cameraPage
       widget.statsCallback((inferenceResults["stats"] as Stats)
         ..totalElapsedTime = uiThreadInferenceElapsedTime);
 
       // set predicting to false to allow new frames
-      setState(() {
-        predicting = false;
-      });
+      setState(() { predicting = false; });
     }
   }
 
-  /// Runs inference in another isolate
+  // Runs inference in another isolate
   Future<Map<String, dynamic>> inference(IsolateData isolateData) async {
     ReceivePort responsePort = ReceivePort();
     isolateUtils?.sendPort?.send(isolateData..responsePort = responsePort.sendPort);

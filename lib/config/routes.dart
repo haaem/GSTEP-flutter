@@ -42,7 +42,7 @@ final List<GetPage> routes = [
   ),
   GetPage(
     name: '/explain',
-    page: () => const MissionExplanationPage(),
+    page: () => MissionExplanationPage(missionId: '0'),
     transition: Transition.fade,
   ),
 ];

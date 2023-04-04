@@ -5,13 +5,28 @@ import '../../config/theme/color.dart';
 import 'package:get/get.dart';
 
 class MissionExplanationPage extends StatefulWidget {
-  const MissionExplanationPage({Key? key}) : super(key: key);
+  final String missionId;
+  const MissionExplanationPage({Key? key, required this.missionId}) : super(key: key);
 
   @override
   State<MissionExplanationPage> createState() => _MissionExplanationPageState();
 }
 
 class _MissionExplanationPageState extends State<MissionExplanationPage> {
+
+  String? _title;
+  String? _explanation;
+
+  @override
+  void initState() {
+    super.initState();
+    loadDecription();
+  }
+
+  void loadDecription() {
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -57,7 +72,7 @@ class _MissionExplanationPageState extends State<MissionExplanationPage> {
                       Container(
                         width: MediaQuery.of(context).size.width-150,
                         child: BodyText(
-                          text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,'
+                          text: '${widget.missionId} Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,'
                               'when an unknown printer took a galley of type and scrambled it to'
                               'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,'
                               'when an unknown printer took a galley of type and scrambled it to',
@@ -83,17 +98,12 @@ class _MissionExplanationPageState extends State<MissionExplanationPage> {
                         child: Container(
                           width: MediaQuery.of(context).size.width-110,
                           height: 45,
-                          decoration: BoxDecoration(
-                            color: Color(0xff86A68A),
-                            borderRadius: BorderRadius.circular(5)
-                          ),
+                          decoration: BoxDecoration( color: Color(0xff86A68A), borderRadius: BorderRadius.circular(5)),
                           child: Center(
                             child: BodyText(text: 'Next', size: 22, weight: FontWeight.w700, color: Colors.white,),
                           ),
                         ),
-                        onTap: () {
-
-                        },
+                        onTap: () { Get.toNamed('/main'); },
                       )
                     ],
                   ),
