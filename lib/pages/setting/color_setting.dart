@@ -44,7 +44,7 @@ class _ColorSettingState extends State<ColorSetting> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           GestureDetector(
-                            child: CircleAvatar(radius: 32, backgroundColor: primaryLightGreen,),
+                            child: CircleAvatar(radius: 30, backgroundColor: primaryLightGreen,),
                             onTap: () {
                               setState(() {
                                 backgroundColor = primaryLightGreen;
@@ -53,7 +53,7 @@ class _ColorSettingState extends State<ColorSetting> {
                             },
                           ),
                           GestureDetector(
-                            child: CircleAvatar(radius: 32, backgroundColor: primaryPink,),
+                            child: CircleAvatar(radius: 30, backgroundColor: primaryPink,),
                             onTap: () {
                               setState(() {
                                 backgroundColor = primaryPink;
@@ -62,7 +62,7 @@ class _ColorSettingState extends State<ColorSetting> {
                             },
                           ),
                           GestureDetector(
-                            child: CircleAvatar(radius: 32, backgroundColor: primaryYellow,),
+                            child: CircleAvatar(radius: 30, backgroundColor: primaryYellow,),
                             onTap: () {
                               setState(() {
                                 backgroundColor = primaryYellow;
@@ -71,7 +71,7 @@ class _ColorSettingState extends State<ColorSetting> {
                             },
                           ),
                           GestureDetector(
-                            child: CircleAvatar(radius: 32, backgroundColor: primarySkyBlue,),
+                            child: CircleAvatar(radius: 30, backgroundColor: primarySkyBlue,),
                             onTap: () {
                               setState(() {
                                 backgroundColor = primarySkyBlue;

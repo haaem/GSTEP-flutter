@@ -5,6 +5,8 @@ import 'package:twentyone_days/config/theme/text/body_text.dart';
 import 'package:get/get.dart';
 import 'package:twentyone_days/core/params/user.dart';
 
+import '../home/main_page.dart';
+
 class TreeSetting extends StatefulWidget {
   const TreeSetting({Key? key}) : super(key: key);
 
@@ -32,7 +34,7 @@ class _TreeSettingState extends State<TreeSetting> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Image.asset(mineTree, height: 300,),
-                SizedBox(height: 40,),
+                SizedBox(height: 100,),
                 Container(
                   height: 320,
                   width: MediaQuery.of(context).size.width,
@@ -116,7 +118,8 @@ class _TreeSettingState extends State<TreeSetting> {
                             String treeName = 'assets/images/tree_${temp}_${userLevel}.png';
                             myTree = treeName;
                           });
-                          Get.toNamed('/main');
+                          Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()),);
                         },
                       )
                     ],
