@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:twentyone_days/tflite/recognition.dart';
 import 'package:twentyone_days/config/theme/color.dart';
 
-/// Individual bounding box
+// Individual bounding box
 class BoxWidget extends StatelessWidget {
   final Recognition result;
 
@@ -32,7 +32,6 @@ class BoxWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Text(result.label??''),
-                  //Text(" ${result.score!.toStringAsFixed(2)}"),
                 ],
               ),
             ),

@@ -61,50 +61,6 @@ class _CameraPageState extends State<CameraPage> {
               ),
             ),
           ),
-          // Align(
-          //   alignment: Alignment.bottomCenter,
-          //   child: DraggableScrollableSheet(
-          //     initialChildSize: 0.4,
-          //     minChildSize: 0.1,
-          //     maxChildSize: 0.5,
-          //     builder: (_, ScrollController scrollController) => Container(
-          //       width: double.maxFinite,
-          //       decoration: BoxDecoration(
-          //           color: Colors.white.withOpacity(0.9),
-          //           borderRadius: BORDER_RADIUS_BOTTOM_SHEET),
-          //       child: SingleChildScrollView(
-          //         controller: scrollController,
-          //         child: Center(
-          //           child: Column(
-          //             mainAxisSize: MainAxisSize.min,
-          //             children: [
-          //               Icon(Icons.keyboard_arrow_up,
-          //                   size: 48, color: Colors.orange),
-          //               (stats != null)
-          //                   ? Padding(
-          //                       padding: const EdgeInsets.all(8.0),
-          //                       child: Column(
-          //                         children: [
-          //                           Text('$results'),
-          //                           StatsRow('Inference time:',
-          //                               '${stats?.inferenceTime} ms'),
-          //                           StatsRow('Total prediction time:',
-          //                               '${stats?.totalElapsedTime} ms'),
-          //                           StatsRow('Pre-processing time:',
-          //                               '${stats?.preProcessingTime} ms'),
-          //                           StatsRow('Frame',
-          //                               '${CameraViewSingleton.inputImageSize?.width} X ${CameraViewSingleton.inputImageSize?.height}'),
-          //                         ],
-          //                       ),
-          //                     )
-          //                   : Container()
-          //             ],
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // )
         ],
       )
     );
@@ -127,7 +83,7 @@ class _CameraPageState extends State<CameraPage> {
     // label & missionId mapping
     String missionId = labelToMissionId(results[0].label!);
 
-    if (missionId == '1' || missionId == '2' || missionId == '3' || missionId == '4') {
+    if (missionId == '1' || missionId == '2' || missionId == '3' || missionId == '4' || missionId == '5') {
       setState(() {
         this.results = results;
       });
@@ -153,12 +109,15 @@ class _CameraPageState extends State<CameraPage> {
     } else if (label=='backpack' || label=='handbag') {
       // BAG
       tmpId = '2';
-    } else if (label=='bicycle' || label=='car' || label=='motocycle' || label=='bus' || label=='train' || label=='boat' || label=='truck') {
-      // VEHICLE - DAILY USE
+    } else if (label=='bicycle' || label=='bus' || label=='train' ) {
+      // VEHICLE - DAILY
       tmpId = '3';
     } else if (label=='person') {
       // PERSON
       tmpId = '4';
+    } else if (label=='car' || label=='motocycle' || label=='boat' || label=='truck') {
+      // VEHICLE - ECO
+      tmpId = '5';
     } else {
       // labels that are not related to opening mission
       tmpId = '0';
@@ -173,18 +132,11 @@ class _CameraPageState extends State<CameraPage> {
 
   Future<void> detectionResult(String missionId) async {
     String mID = missionId;
-    if (mID == '3') { // hard-coded to open mission 3&5
-      final post_url_3 = Uri.parse('http://34.64.137.128:8080/user/${userId}/3');
-      final post_url_5 = Uri.parse('http://34.64.137.128:8080/user/${userId}/5');
-      final res3 = await http.put(post_url_3, headers: { "Content-Type" : "application/json"});
-      final res5 = await http.put(post_url_5, headers: { "Content-Type" : "application/json"});
-      print(res3.statusCode);
-      print(res5.statusCode);
-    } else {
-      final post_url = Uri.parse('http://34.64.137.128:8080/user/${userId}/${mID}');
-      final res = await http.put(post_url, headers: { "Content-Type" : "application/json"});
-      print(res.statusCode);
-    }
+
+    final post_url = Uri.parse('http://34.64.137.128:8080/user/${userId}/${mID}');
+    final res = await http.put(post_url, headers: { "Content-Type" : "application/json"});
+    print(res.statusCode);
+
     final get_url = Uri.parse('http://34.64.137.128:8080/user/${userId}/');
     final res2 = await http.get(get_url);
     var userData = jsonDecode(res2.body);
@@ -202,24 +154,3 @@ class _CameraPageState extends State<CameraPage> {
   static const BORDER_RADIUS_BOTTOM_SHEET = BorderRadius.only(
       topLeft: BOTTOM_SHEET_RADIUS, topRight: BOTTOM_SHEET_RADIUS);
 }
-
-/// Row for one Stats field
-// class StatsRow extends StatelessWidget {
-//   final String left;
-//   final String right;
-
-//   StatsRow(this.left, this.right);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.only(bottom: 8.0),
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//         children: [Text(left), Text(right)],
-//       ),
-//     );
-//   }
-// }
-
-
