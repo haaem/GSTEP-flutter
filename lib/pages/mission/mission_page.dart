@@ -53,7 +53,7 @@ class MissionPageState extends State<MissionPage> {
                   ),
                   Center(
                     child: BodyText(
-                      text: 'You’ve opened ${missionOpened} missions',
+                      text: "You’ve opened ${missionOpened} missions",
                       textAlign: TextAlign.center,
                       color: primaryGrey,
                       size: 18,

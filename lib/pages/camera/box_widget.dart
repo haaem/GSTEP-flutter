@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:twentyone_days/tflite/recognition.dart';
+import 'package:twentyone_days/config/theme/color.dart';
 
 /// Individual bounding box
 class BoxWidget extends StatelessWidget {
@@ -9,10 +10,7 @@ class BoxWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Color for bounding box
-    Color color = Colors.primaries[((result.label?.length ?? 0) +
-            result.label!.codeUnitAt(0) +
-            (result.id ?? 0)) %
-        Colors.primaries.length];
+    Color color = primaryGrey;
 
     return Positioned(
       left: result.renderLocation.left,
@@ -23,7 +21,7 @@ class BoxWidget extends StatelessWidget {
         width: result.renderLocation.width,
         height: result.renderLocation.height,
         decoration: BoxDecoration(
-            border: Border.all(color: color, width: 3),
+            border: Border.all(color: color, width: 2),
             borderRadius: BorderRadius.all(Radius.circular(2))),
         child: Align(
           alignment: Alignment.topLeft,
@@ -34,7 +32,7 @@ class BoxWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Text(result.label??''),
-                  Text(" ${result.score!.toStringAsFixed(2)}"),
+                  //Text(" ${result.score!.toStringAsFixed(2)}"),
                 ],
               ),
             ),

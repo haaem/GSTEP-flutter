@@ -108,7 +108,7 @@ class _MissionButtonState extends State<MissionButton> {
               userMissionProgress['${widget.id}'] = score+1;
               HapticFeedback.mediumImpact();
               final url = Uri.parse(
-                'http://34.64.137.128:8080/user/${userId}/',
+                'http://34.64.137.128:8080/user/${userId}',
               );
               final res = await http.put(
                 url,

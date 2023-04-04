@@ -23,7 +23,7 @@ class Classifier {
   // initialize model inference related variables
   static const int inputSize = 300;
   static const double threshold = 0.5;
-  static const int numResults = 10;
+  static const int numResults = 1;
 
   int? paddingSize;
 
@@ -151,6 +151,7 @@ class Classifier {
       var labelIndex = outputClasses.getIntValue(i) + labelOffset;
       var label = _labels?.elementAt(labelIndex);
 
+      // got result
       if (score > threshold) {
         // [locations] corresponds to the image size 300 X 300
         // inverseTransformRect transforms it our [inputImage]
