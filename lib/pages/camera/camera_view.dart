@@ -21,8 +21,6 @@ import 'package:twentyone_days/utils/isolate_utils.dart';
 * - Load TFLite model and labels
 *
 * Todo
-* - Connect Server to get data(step, mission log)
-* - Load Model and label
 * - Change Mission List: Container -> ListView
 *
 * */
@@ -40,7 +38,7 @@ class CameraView extends StatefulWidget {
 }
 
 class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
-  /// List of available cameras
+  // List of available cameras
   List<CameraDescription>? cameras;
   
   CameraController? cameraController;

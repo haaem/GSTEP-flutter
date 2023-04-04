@@ -34,7 +34,7 @@ class _TreeSettingState extends State<TreeSetting> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Image.asset(mineTree, height: 300,),
-                SizedBox(height: 100,),
+                // SizedBox(height: 100,),
                 Container(
                   height: 320,
                   width: MediaQuery.of(context).size.width,

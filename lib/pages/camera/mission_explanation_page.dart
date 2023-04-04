@@ -16,6 +16,7 @@ class _MissionExplanationPageState extends State<MissionExplanationPage> {
 
   String? _title;
   String? _explanation;
+  String? _mission;
 
   @override
   void initState() {
@@ -24,7 +25,31 @@ class _MissionExplanationPageState extends State<MissionExplanationPage> {
   }
 
   void loadDecription() {
-
+    if (widget.missionId == '1') {
+      _title = 'USE\nYOUR\nTUMBLER';
+      _explanation = 'Disposable plastic cups are a common item used in our daily lives, but they have a significant negative impact on the environment. These cups contribute to plastic waste pollution, which can take hundreds of years to decompose, and harm marine life and ecosystems. To reduce our environmental impact, we can use a tumbler instead of disposable plastic cups. Tumblers are reusable and made from materials like stainless steel or glass, which are eco-friendly and can be used multiple times. By using a tumbler, we can reduce the amount of plastic waste generated and minimize our carbon footprint.';
+      _mission = 'USE YOUR TUMBLER';
+    } else if (widget.missionId == '2') {
+      _title = 'USE\nREUSABLE\nBAG';
+      _explanation = 'Disposable plastic bags are a significant contributor to environmental pollution and harm wildlife and ecosystems. To protect the environment, we can take simple steps to reduce our usage of disposable plastic bags. One way to do this is by using reusable bags made of cloth, canvas, or other eco-friendly materials. These bags are durable, washable, and can be used multiple times, reducing the need for disposable plastic bags';
+      _mission = 'USE REUSABLE BAG';
+    } else if (widget.missionId == '3') {
+      _title = 'WALK\nFOR A SHORT\nDISTANCE';
+      _explanation = 'Walking short distances instead of driving or taking a taxi is a small but impactful action that can help protect the environment. The transportation sector is a significant contributor to greenhouse gas emissions, air pollution, and noise pollution, all of which have negative effects on both our health and the health of the planet. By choosing to walk, we can reduce our carbon footprint, improve air quality, and minimize noise pollution.';
+      _mission = 'WALK FOR A SHORT DISTANCE';
+    } else if (widget.missionId == '4') {
+      _title = '“WE”\nHAVE TO\nDO IT';
+      _explanation = 'Whether it\'s reducing our carbon footprint, conserving water, or supporting conservation efforts, every action we take to protect the environment makes a difference. It\'s up to us to start making those changes, right here and right now!';
+      _mission = ' ';
+    } else if (widget.missionId == '5') {
+      _title = 'ECO\nDRIVING';
+      _explanation = 'Eco-driving is a driving technique that focuses on reducing the environmental impact of vehicles by optimizing fuel efficiency and reducing emissions. By practicing eco-driving, we can protect the environment. Some simple eco-driving techniques include avoiding rapid acceleration and braking, maintaining a consistent speed, reducing idling time, and keeping tires properly inflated. Drive towards a more sustainable future!';
+      _mission = ' ';
+    } else {
+      _title = 'NEW\nMISSION\nHERE';
+      _explanation = 'something wrong happened';
+      _mission = 'new\nmission\nhere';
+    }
   }
 
   @override
@@ -48,7 +73,7 @@ class _MissionExplanationPageState extends State<MissionExplanationPage> {
                   children: [
                     SizedBox(width: 30,),
                     TitleText(
-                      text: 'USE\nYOUR\nTUMBLER',
+                      text: _title!,
                       color: Color(0xff86A68A),
                       size: 32,
                       weight: FontWeight.w700,
@@ -72,10 +97,7 @@ class _MissionExplanationPageState extends State<MissionExplanationPage> {
                       Container(
                         width: MediaQuery.of(context).size.width-150,
                         child: BodyText(
-                          text: '${widget.missionId} Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,'
-                              'when an unknown printer took a galley of type and scrambled it to'
-                              'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,'
-                              'when an unknown printer took a galley of type and scrambled it to',
+                          text: _explanation!,
                           color: primaryGrey,
                           size: 20,
                           weight: FontWeight.w300,
@@ -89,7 +111,7 @@ class _MissionExplanationPageState extends State<MissionExplanationPage> {
                           SizedBox(width: 5,),
                           Container(
                             width: MediaQuery.of(context).size.width - 190,
-                            child: BodyText(text: '미션미션미션미션미션미션미션미션미션미션미션미션미션미', size: 20, color: primaryGrey, weight: FontWeight.w300,),
+                            child: BodyText(text: _mission!, size: 20, color: primaryGrey, weight: FontWeight.w300,),
                           )
                         ],
                       ),

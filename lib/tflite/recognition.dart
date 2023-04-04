@@ -25,11 +25,11 @@ class Recognition {
   double? get score => _score;
   Rect? get location => _location;
 
-  /// Returns bounding box rectangle corresponding to the
-  /// displayed image on screen
-  ///
-  /// This is the actual location where rectangle is rendered on
-  /// the screen
+  // Returns bounding box rectangle corresponding to the
+  // displayed image on screen
+  //
+  // This is the actual location where rectangle is rendered on
+  // the screen
   Rect get renderLocation {
     // ratioX = screenWidth / imageInputWidth
     // ratioY = ratioX if image fits screenWidth with aspectRatio = constant
