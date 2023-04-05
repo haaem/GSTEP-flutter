@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:twentyone_days/config/theme/color.dart';
 import 'package:twentyone_days/config/theme/text/body_text.dart';
 import 'package:twentyone_days/core/params/user.dart';
@@ -22,7 +23,6 @@ class ProfileSettingPageState extends State<ProfileSettingPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isValid = false;
   bool _hasCountry = false;
-  static bool profileSetting = false;
 
   void _tryValidation() {
     _isValid = _formKey.currentState!.validate() && _hasCountry;
@@ -203,6 +203,13 @@ class ProfileSettingPageState extends State<ProfileSettingPage> {
     userId = userData['ID'];
     userLevel = userData['Step'];
     userPoint = userData['Point'];
+    userEmail = userData['Email'];
+    final SharedPreferences pref =
+    await SharedPreferences.getInstance();
+    pref.setInt('userId', userId);
+    pref.setInt('userLevel', userLevel);
+    pref.setInt('userPoint', userPoint);
+    pref.setString('userEmail', userEmail);
     milestone = userData['Milestone'];
     userMissionProgress = userData['Progress'];
 

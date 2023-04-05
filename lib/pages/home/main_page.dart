@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:twentyone_days/config/theme/color.dart';
 import 'package:twentyone_days/config/theme/text/body_text.dart';
@@ -46,6 +47,11 @@ class _MainPageState extends State<MainPage> {
   }
 
   void missionSetting() async {
+    final SharedPreferences pref =
+    await SharedPreferences.getInstance();
+    try {
+      userId = pref.getInt('userId')!;
+    } catch (e) {}
     final url = Uri.parse(
       'http://34.64.137.128:8080/user/${userId}',
     );
@@ -63,6 +69,11 @@ class _MainPageState extends State<MainPage> {
   }
 
   Future stepSetting() async {
+    final SharedPreferences pref =
+    await SharedPreferences.getInstance();
+    try {
+      userId = pref.getInt('userId')!;
+    } catch (e) {}
     final url = Uri.parse(
       'http://34.64.137.128:8080/user/${userId}',
     );
@@ -73,9 +84,43 @@ class _MainPageState extends State<MainPage> {
     return milestone;
   }
 
+  Future setup() async {
+    // final SharedPreferences pref =
+    // await SharedPreferences.getInstance();
+    // try {
+    //   userId = pref.getInt('userId')!;
+    // } catch (e) {}
+    final url = Uri.parse(
+      'http://34.64.137.128:8080/user/${userId}',
+    );
+    final response = await http.get(url);
+    var userData = jsonDecode(response.body);
+    userLevel = userData['Step'];
+    userPoint = userData['Point'];
+    userMissionProgress = userData['Progress'];
+    milestone = userData['Milestone'];
+    setState(() {});
+  }
+
+  Future set() async {
+    final SharedPreferences pref =
+    await SharedPreferences.getInstance();
+    late var temp;
+    try {
+      temp = pref.getInt('userId')!;
+    } catch (e) {}
+    return temp;
+  }
+
   @override
   void initState() {
     // TODO: implement initState
+    set().then((value) {
+      setState(() {
+        userId = value;
+      });
+    });
+    setup().then((value) => null);
     stepSetting().then((value) {
       setState(() {
         milestone = value;
@@ -95,6 +140,7 @@ class _MainPageState extends State<MainPage> {
     var width = MediaQuery.of(context).size.width;
     PanelController _pc = new PanelController();
     late var current;
+    setup();
 
     return SafeArea(
         child: Scaffold(
