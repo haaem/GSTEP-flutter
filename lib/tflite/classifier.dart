@@ -22,7 +22,7 @@ class Classifier {
 
   // initialize model inference related variables
   static const int inputSize = 300;
-  static const double threshold = 0.5;
+  static const double threshold = 0.4;
   static const int numResults = 1;
 
   int? paddingSize;

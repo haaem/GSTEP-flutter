@@ -50,17 +50,6 @@ class _CameraPageState extends State<CameraPage> {
         children: <Widget>[
           CameraView(resultsCallback, statsCallback),
           boundingBoxes(results),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Container(
-              padding: EdgeInsets.only(top: 20),
-              child: Text(
-                'Detect New Step!',
-                textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 18, color: primaryGrey),
-              ),
-            ),
-          ),
         ],
       )
     );
@@ -150,7 +139,4 @@ class _CameraPageState extends State<CameraPage> {
     });
   }
 
-  static const BOTTOM_SHEET_RADIUS = Radius.circular(24.0);
-  static const BORDER_RADIUS_BOTTOM_SHEET = BorderRadius.only(
-      topLeft: BOTTOM_SHEET_RADIUS, topRight: BOTTOM_SHEET_RADIUS);
 }
