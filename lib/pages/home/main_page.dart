@@ -47,7 +47,7 @@ class _MainPageState extends State<MainPage> {
 
   void missionSetting() async {
     final url = Uri.parse(
-      'http://34.64.137.128:8080/user/${userId}/',
+      'http://34.64.137.128:8080/user/${userId}',
     );
     var response = await http.get(url);
     var userData = jsonDecode(response.body);
@@ -56,7 +56,7 @@ class _MainPageState extends State<MainPage> {
 
   void mapSetting() async {
     final markerUrl = Uri.parse(
-      'http://34.64.137.128:8080/marker/',
+      'http://34.64.137.128:8080/marker',
     );
     var res = await http.get(markerUrl);
     totalMarker = jsonDecode(res.body);
@@ -64,7 +64,7 @@ class _MainPageState extends State<MainPage> {
 
   Future stepSetting() async {
     final url = Uri.parse(
-      'http://34.64.137.128:8080/user/${userId}/',
+      'http://34.64.137.128:8080/user/${userId}',
     );
     var resp = await http.get(url);
     var total = jsonDecode(resp.body);
@@ -127,7 +127,11 @@ class _MainPageState extends State<MainPage> {
                     if (accept) {
                       current = await getCurrentLocation();
                       mapSetting();
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => MapPage(location: current)));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  MapPage(location: current)));
                     } else {
                       showDialog(
                           context: context,
@@ -191,7 +195,6 @@ class _MainPageState extends State<MainPage> {
                   myTree,
                   //tree_blue_4,
                   height: MediaQuery.of(context).size.height * .35,
-
                 ),
               ),
               // 세팅 변경
@@ -215,28 +218,6 @@ class _MainPageState extends State<MainPage> {
                       Get.toNamed('/color_setting');
                     },
                   )),
-              //제출 전에 지우기
-              Positioned(
-                bottom: 350,
-                right: 30,
-                child: GestureDetector(
-                    child: Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        color: Colors.white70,
-                      ),
-                      child: Icon(
-                        Icons.autorenew_rounded,
-                        color: Colors.black54,
-                      ),
-                    ),
-                    onTap: () {
-                      Get.toNamed('/explain');
-                    },
-                )
-              )
             ],
           ),
         ),

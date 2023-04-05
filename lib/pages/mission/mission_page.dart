@@ -17,8 +17,6 @@ class MissionPage extends StatefulWidget {
 class MissionPageState extends State<MissionPage> {
   late double width;
   int missionOpened = userMissionProgress.length;
-  int score1 = -1;
-  int score5 = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +66,9 @@ class MissionPageState extends State<MissionPage> {
                 children: [
                   MissionButton(
                       id: 1,
-                      score: score1,
+                      score: userMissionProgress.containsKey("1")
+                          ? userMissionProgress["1"]
+                          : 0,
                       width: (width - 50) * 0.5,
                       height: 240,
                       color: missionLightGreen,
@@ -126,7 +126,9 @@ class MissionPageState extends State<MissionPage> {
                   ),
                   MissionButton(
                       id: 5,
-                      score: score5,
+                      score: userMissionProgress.containsKey("5")
+                          ? userMissionProgress["5"]
+                          : 0,
                       width: (width - 50) * 0.5,
                       height: 240,
                       color: missionLightYellow,
