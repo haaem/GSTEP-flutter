@@ -204,6 +204,7 @@ class ProfileSettingPageState extends State<ProfileSettingPage> {
     userLevel = userData['Step'];
     userPoint = userData['Point'];
     milestone = userData['Milestone'];
+    userMissionProgress = userData['Progress'];
 
     // log('Response status: ${response.statusCode}');
     // log('Response body: ${response.body}');
