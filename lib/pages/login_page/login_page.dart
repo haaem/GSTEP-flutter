@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:twentyone_days/config/theme/color.dart';
 import 'package:twentyone_days/config/theme/text/title_text.dart';
 import 'package:twentyone_days/pages/home/main_page.dart';
+import '../../core/params/user.dart';
 import 'google_login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,7 +22,7 @@ class LoginPage extends StatelessWidget {
       body: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
-            if (ProfileSettingPageState.profileSetting) {
+            if (snapshot.hasData) {
               return const MainPage();
             } else {
               return SafeArea(
