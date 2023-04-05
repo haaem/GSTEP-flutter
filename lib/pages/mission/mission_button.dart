@@ -82,7 +82,7 @@ class _MissionButtonState extends State<MissionButton> {
                             height: 30,
                           ),
                           TitleText(
-                            text: "${widget.score + 2}",
+                            text: "${userMissionProgress["${widget.id}"] + 2}",
                             size: 65,
                             color: _hasScore ? Colors.white : widget.color,
                           ),
@@ -113,21 +113,31 @@ class _MissionButtonState extends State<MissionButton> {
             final url = Uri.parse(
               'http://34.64.137.128:8080/user/${userId}',
             );
-            log('이전: ${jsonEncode(userMissionProgress)}');
+            var json = jsonEncode({"Progress": userMissionProgress});
+            log('이전: ${json}');
             final res =
-                await http.put(url, body: {
-                  "Email": userEmail,
-                  "Nickname": userName,
-                  "Country": userCountry,
-                  "Progress": jsonEncode(userMissionProgress)
-                });
+                await http.put(url,
+                    headers: {"Content-Type": "application/json", 'Accept': 'application/json',},
+                    body: json, encoding: Encoding.getByName("utf-8")
+                );
             final res2 = await http.get(url);
             var userData = jsonDecode(res2.body);
             log('이후: ${userData}');
             userMissionProgress = userData['Progress'];
             userPoint = userData['Point'];
             userLevel = userData['Step'];
-            myTree = 'assets/images/tree_${treeColor}_${userLevel}';
+            late String temp;
+            if (treeColor == 1) {
+              temp = 'green';
+            } else if (treeColor == 2) {
+              temp = 'pink';
+            } else if (treeColor == 3) {
+              temp = 'blue';
+            } else {
+              temp = 'yel';
+            }
+            String treeName = 'assets/images/tree_${temp}_${userLevel}.png';
+            myTree = treeName;
             setState(() {});
           }
         },
