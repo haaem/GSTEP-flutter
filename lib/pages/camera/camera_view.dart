@@ -20,9 +20,6 @@ import 'package:twentyone_days/utils/isolate_utils.dart';
 * - Initialize Camera and pass to cameraPage through parameter
 * - Load TFLite model and labels
 *
-* Todo
-* - Change Mission List: Container -> ListView
-*
 * */
 
 class CameraView extends StatefulWidget {
@@ -77,8 +74,9 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
   void initializeCamera() async {
     cameras = await availableCameras();
     // cameras[0] for rear-camera
+  
     cameraController =
-        CameraController(cameras![0], ResolutionPreset.medium, enableAudio: false);
+        CameraController(cameras![0], ResolutionPreset.max, enableAudio: false);
 
     cameraController?.initialize().then((_) async {
       // Stream of image passed to [onLatestImageAvailable] callback
@@ -87,19 +85,15 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
       // previewSize is size of each image frame captured by controller
       // 352x288 on iOS, 240p (320x240) on Android with ResolutionPreset.low
       Size? previewSize = cameraController?.value.previewSize;
+      print(previewSize);
 
       CameraViewSingleton.inputImageSize = previewSize;
-
-      // the display width of image on screen is
-      // same as screenWidth while maintaining the aspectRatio
       Size screenSize = MediaQuery.of(context).size;
-      // deviceRatio = screenSize.width / screenSize.height;
-      // xScale = cameraController!.value.aspectRatio / deviceRatio!;
-      // yScale = 1;
+      print(screenSize);
 
       CameraViewSingleton.screenSize = screenSize;
       CameraViewSingleton.ratio = screenSize.width / (previewSize?.height ?? 0);
-      //CameraViewSingleton.ratio = deviceRatio;
+      print(cameraController!.value.aspectRatio);
     });
   }
 
@@ -109,14 +103,15 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
     if (cameraController == null || !cameraController!.value.isInitialized) {
       return Container();
     }
-    return AspectRatio(
-        aspectRatio: cameraController!.value.aspectRatio,
-        // aspectRatio: deviceRatio!,
-        child: CameraPreview(cameraController!)
-        // child: Transform(
-        //     alignment: Alignment.center,
-        //     transform: Matrix4.diagonal3Values(xScale!, yScale, 1),
-        //     child: CameraPreview(cameraController!)));
+    return SafeArea(
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        color: Colors.black54,
+        child: AspectRatio(
+          aspectRatio: 1 / cameraController!.value.aspectRatio,
+          child: CameraPreview(cameraController!),
+        ),
+      ),
     );
   }
 
