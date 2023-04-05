@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:twentyone_days/config/theme/color.dart';
 import 'package:twentyone_days/config/theme/text/body_text.dart';
 import 'package:http/http.dart' as http;
+import 'package:twentyone_days/core/params/user.dart';
 import 'package:twentyone_days/pages/map/add_marker_popup.dart';
 
 class MyMarker extends StatefulWidget {
@@ -19,7 +20,12 @@ class _MyMarkerState extends State<MyMarker> {
   @override
   Widget build(BuildContext context) {
     late bool isMarkerAllowed;
-    bool isStepAllowed = true;
+    late bool isStepAllowed;
+    if (userLevel >=2) {
+      isStepAllowed = true;
+    } else {
+      isStepAllowed = false;
+    }
 
     return GestureDetector(
       child: Container(

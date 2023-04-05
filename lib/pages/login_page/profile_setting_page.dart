@@ -204,18 +204,10 @@ class ProfileSettingPageState extends State<ProfileSettingPage> {
     userLevel = userData['Step'];
     userPoint = userData['Point'];
     milestone = userData['Milestone'];
+    userMissionProgress = userData['Progress'];
 
-    log('Response status: ${response.statusCode}');
-    log('Response body: ${response.body}');
-    log('Response headers: ${response.headers}');
-
-    // final res2 = await http.get(
-    //   Uri.parse(
-    //     'http://34.64.137.128:8080/user/4',
-    //   ),
-    // );
-    //
-    // print('Response status: ${res2.statusCode}');
-    // print('Response body: ${userId}');
+    // log('Response status: ${response.statusCode}');
+    // log('Response body: ${response.body}');
+    // log('Response headers: ${response.headers}');
   }
 }
