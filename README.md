@@ -7,6 +7,7 @@ In today's world, it's hard to feel the impact of environmental changes. We hear
 <img src="https://user-images.githubusercontent.com/113160789/229126005-9464e46a-ed95-4553-9b6c-56743e631c7b.png" width="500">
 
 ## 📹 Demo Video Link
+[![Video Label](https://youtu.be/jqtYubKEiZg/0.jpg)](https://youtu.be/jqtYubKEiZg)
 
 
 ## 🛠 Project Architecure
